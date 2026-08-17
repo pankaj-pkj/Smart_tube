@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Smart Tube{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+
+{% block topbar_actions %}
+  <a class="btn primary" href="{{ url_for('campaign_new') }}">＋ New campaign</a>
+{% endblock %}
+
+{% block content %}
+
+{% if not yt_connected and not ig_connected %}
+  <div class="note">
+    Abhi koi account connected nahi hai. Pehle <a href="{{ url_for('enter') }}"><b>API & Settings</b></a>
+    page par jaake YouTube / Instagram connect karo.
+  </div>
+{% endif %}
+
+<div class="grid cols-4">
+  <div class="stat ok"><b data-stat="success">{{ totals.get('success', 0) }}</b><span>Uploaded</span></div>
+  <div class="stat"><b data-stat="pending">{{ totals.get('pending', 0) }}</b><span>Scheduled</span></div>
+  <div class="stat warn"><b data-stat="running">{{ totals.get('running', 0) }}</b><span>Running</span></div>
+  <div class="stat err"><b data-stat="failed">{{ totals.get('failed', 0) }}</b><span>Failed</span></div>
+</div>
+
+<div class="card">
+  <h2>🎬 Campaigns</h2>
+  <p class="sub">Har campaign = ek video + uska poora upload schedule.</p>
+
+  {% if rows %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th><th>Platform</th><th>Schedule</th><th>Progress</th>
+            <th>Next upload</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in rows %}
+          <tr>
+            <td>
+              <a href="{{ url_for('campaign_detail', campaign_id=r.c.id) }}"><b>{{ r.c.name }}</b></a>
+              <div class="muted mono" style="font-size:11px">{{ r.c.video_name or '' }}</div>
+            </td>
+            <td>
+              {% if r.c.platform in ('youtube', 'both') %}<span class="tag yt">YT</span>{% endif %}
+              {% if r.c.platform in ('instagram', 'both') %}<span class="tag ig">IG</span>{% endif %}
+            </td>
+            <td class="muted">har {{ r.c.interval_minutes }} min × {{ r.c.total_uploads }}</td>
+            <td style="min-width:130px">
+              <div class="bar"><i style="width: {{ r.percent }}%"></i></div>
+              <small class="muted">{{ r.done }} / {{ r.total }}</small>
+            </td>
+            <td class="muted">
+              {% if r.next_at %}{{ r.next_at|localtime }}<br><small>{{ r.next_at|ago }}</small>
+              {% else %}—{% endif %}
+            </td>
+            <td>
+              <span class="tag {{ 'running' if r.c.status == 'running' else ('success' if r.c.status == 'done' else '') }}">
+                {{ r.c.status }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-row">
+                {% if r.c.status == 'running' %}
+                  <form class="inline" method="post" action="{{ url_for('campaign_action', campaign_id=r.c.id, action='pause') }}">
+                    <button class="btn sm">Pause</button>
+                  </form>
+                {% elif r.c.status == 'paused' %}
+                  <form class="inline" method="post" action="{{ url_for('campaign_action', campaign_id=r.c.id, action='resume') }}">
+                    <button class="btn sm primary">Start</button>
+                  </form>
+                {% endif %}
+                <a class="btn sm ghost" href="{{ url_for('campaign_detail', campaign_id=r.c.id) }}">Open</a>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty">
+      Abhi koi campaign nahi hai.<br><br>
+      <a class="btn primary" href="{{ url_for('campaign_new') }}">Pehla campaign banao</a>
+    </div>
+  {% endif %}
+</div>
+
+<div class="grid cols-2">
+  <div class="card">
+    <h2>⏭️ Agle uploads</h2>
+    <p class="sub">Jo queue mein lage hain.</p>
+    {% if upcoming %}
+      <div class="table-wrap">
+        <table>
+          <tbody>
+          {% for u in upcoming %}
+            <tr>
+              <td><span class="tag {{ 'yt' if u.platform == 'youtube' else 'ig' }}">{{ 'YT' if u.platform == 'youtube' else 'IG' }}</span></td>
+              <td>
+                <b>#{{ u.seq }}</b> {{ (u.title or '')[:46] }}
+                <div class="muted" style="font-size:11px">{{ u.campaign_name }}</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                {{ u.scheduled_at|localtime }}<br><small>{{ u.scheduled_at|ago }}</small>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty">Queue khali hai.</div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>🕘 Recent activity</h2>
+    <p class="sub">Pichhle uploads ka result.</p>
+    {% if recent %}
+      <div class="table-wrap">
+        <table>
+          <tbody>
+          {% for u in recent %}
+            <tr data-upload-row="{{ u.id }}">
+              <td><span class="tag {{ u.status }}">{{ u.status }}</span></td>
+              <td>
+                <b>#{{ u.seq }}</b> {{ (u.title or '')[:40] }}
+                <div class="muted" style="font-size:11px">{{ u.campaign_name }}</div>
+                {% if u.status == 'running' %}
+                  <div class="bar" data-progress-for="{{ u.id }}" style="margin-top:5px">
+                    <i style="width: {{ u.progress or 0 }}%"></i>
+                  </div>
+                {% endif %}
+                {% if u.error %}<div class="muted" style="font-size:11px;color:var(--err)">{{ u.error[:90] }}</div>{% endif %}
+              </td>
+              <td style="text-align:right">
+                {% if u.remote_url %}<a class="btn sm ghost" href="{{ u.remote_url }}" target="_blank" rel="noopener">Open</a>{% endif %}
+                <div class="muted" style="font-size:11px">{{ (u.finished_at or u.started_at)|ago }}</div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty">Abhi tak koi upload nahi hua.</div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

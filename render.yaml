@@ -1,0 +1,30 @@
+# Render.com par one-click deploy ke liye.
+# Note: Free plan inactivity par sleep ho jaata hai aur tab scheduler ruk jaata hai,
+# isliye hourly uploads ke liye Starter (always-on) hi kaam karega.
+services:
+  - type: web
+    name: smart-tube
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    # 1 worker zaruri hai warna duplicate uploads honge.
+    startCommand: gunicorn app:app -w 1 --threads 8 -b 0.0.0.0:$PORT --timeout 1800
+    healthCheckPath: /login
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: APP_PIN
+        sync: false
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: MAX_UPLOAD_MB
+        value: "512"
+      - key: TICK_SECONDS
+        value: "30"
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+    disk:
+      # Videos + SQLite yahan rehte hain. Bina disk ke restart par sab data chala jayega.
+      name: smart-tube-data
+      mountPath: /opt/render/project/src/storage
+      sizeGB: 5

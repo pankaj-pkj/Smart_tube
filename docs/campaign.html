@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motivation Reel — August · Smart Tube</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
+
+<style>
+  .demo-banner {
+    position: sticky; top: 0; z-index: 50;
+    background: linear-gradient(90deg, rgba(255,61,84,.22), rgba(124,92,255,.18));
+    border-bottom: 1px solid var(--line);
+    padding: 9px 16px; font-size: 12.5px; color: var(--text);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  .demo-banner a { color: #b9a6ff; text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="demo-banner">
+  <b>🎬 DEMO</b> — ye sirf UI preview hai (GitHub Pages par static chal raha hai).
+  Asli tool Python se chalta hai: video upload, scheduling aur auto-comment tabhi hote
+  hain jab app kisi server ya PC par chal raha ho.
+  <a href="https://github.com/pankaj-pkj/Smart_tube" target="_blank" rel="noopener">Source ↗</a>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">📺</span>
+      <div>
+        <strong>Smart Tube</strong>
+        <small>auto uploader</small>
+      </div>
+    </div>
+
+    <nav>
+      <a href="index.html" class="">
+        <span>▦</span> Dashboard
+      </a>
+      <a href="new.html" class="">
+        <span>＋</span> New Campaign
+      </a>
+      <a href="enter.html" class="">
+        <span>🔑</span> API & Settings
+      </a>
+      <a href="logs.html" class="">
+        <span>▤</span> Logs
+      </a>
+    </nav>
+
+    <div class="conn-box">
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>YouTube</strong>
+          <small>My Shorts Channel</small>
+        </div>
+      </div>
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>Instagram</strong>
+          <small>@my.reels.page</small>
+        </div>
+      </div>
+      <p class="tzline">🕒 Asia/Kolkata</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1>Motivation Reel — August</h1>
+      <div class="topbar-right">
+        <span id="clock" class="clock"></span>
+        
+  
+    <form class="inline" method="post" action="#">
+      <button class="btn">⏸ Pause</button>
+    </form>
+  
+  <form class="inline" method="post" action="#"
+        data-confirm="Campaign, uska schedule aur uploaded file delete ho jayegi. Pakka?">
+    <button class="btn danger">Delete</button>
+  </form>
+
+      </div>
+    </header>
+
+    
+      
+    
+
+    
+
+<div class="grid cols-4">
+  <div class="stat"><b>24</b><span>Planned</span></div>
+  <div class="stat"><b>60m</b><span>Gap</span></div>
+  <div class="stat"><b>24.0</b><span>Per day</span></div>
+  <div class="stat ok"><b>running</b><span>Status</span></div>
+</div>
+
+<div class="grid cols-2">
+  <div class="card">
+    <h2>📄 Settings</h2>
+    <table>
+      <tbody>
+        <tr><td class="muted">Platform</td><td>
+          <span class="tag yt">YouTube</span>
+          <span class="tag ig">Instagram</span>
+        </td></tr>
+        <tr><td class="muted">Video</td><td class="mono">motivation_clip.mp4 · 8.0 MB</td></tr>
+        <tr><td class="muted">Thumbnail</td><td>lagaya jayega</td></tr>
+        <tr><td class="muted">Title template</td><td class="mono">{Amazing|Superb|Best} clip {emoji} — part {n}/{total}</td></tr>
+        <tr><td class="muted">Comment template</td><td class="mono">{Nice|Superb|Mast} video {emoji} — {Subscribe|Follow} kar do! #{n}</td></tr>
+        <tr><td class="muted">Privacy</td><td>public</td></tr>
+        <tr><td class="muted">Start</td><td>17 Aug 2026, 04:25 AM</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>📊 YouTube quota</h2>
+    <p class="sub">Google ka default project quota 10,000 units/din hai.</p>
+    <table>
+      <tbody>
+        <tr><td class="muted">Ek upload ka kharcha</td><td><b>1700</b> units</td></tr>
+        <tr><td class="muted">Is speed par roz</td><td><b>40,800</b> units</td></tr>
+        <tr><td class="muted">Daily limit</td><td>10,000 units</td></tr>
+        <tr><td class="muted">Realistic max</td><td><b>5</b> uploads/din</td></tr>
+      </tbody>
+    </table>
+    
+      <div class="note">
+        Is speed par quota din mein khatam ho jayega. Jo uploads bach jayenge wo
+        <b>apne aap agle din</b> ke liye shift ho jayenge — koi upload cancel nahi hota.
+        24/din chahiye to Google se quota increase request karni padegi.
+      </div>
+    
+
+    <h2 style="margin-top:18px">⏱️ Sab shift karo</h2>
+    <form method="post" action="#"
+          class="btn-row" style="margin-top:8px">
+      <input type="number" name="minutes" value="60" style="max-width:110px">
+      <button class="btn sm">Pending uploads shift karo (minutes)</button>
+    </form>
+    <p class="hint">Minus value daalo to pehle chal jayenge (jaise -30).</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🗓️ Upload schedule</h2>
+  <p class="sub">Har row alag se run / skip / reschedule ho sakti hai.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Platform</th><th>Time</th><th>Title / comment</th><th>Status</th><th>Link</th><th></th></tr>
+      </thead>
+      <tbody>
+      
+        <tr data-upload-row="2">
+          <td><b>1</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 04:25 AM
+            <div class="muted" style="font-size:11px">5 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Best clip ✨ — part 1/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #1</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.instagram.com/reel/C1xyzDemo/" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="1">
+          <td><b>1</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 04:25 AM
+            <div class="muted" style="font-size:11px">5 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Best clip ✨ — part 1/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #1</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg1" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="4">
+          <td><b>2</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 05:25 AM
+            <div class="muted" style="font-size:11px">4 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Amazing clip 🚀 — part 2/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #2</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.instagram.com/reel/C2xyzDemo/" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="3">
+          <td><b>2</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 05:25 AM
+            <div class="muted" style="font-size:11px">4 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Amazing clip 🚀 — part 2/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #2</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg2" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="6">
+          <td><b>3</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 06:25 AM
+            <div class="muted" style="font-size:11px">3 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 💯 — part 3/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #3</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.instagram.com/reel/C3xyzDemo/" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="5">
+          <td><b>3</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 06:25 AM
+            <div class="muted" style="font-size:11px">3 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 💯 — part 3/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #3</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg3" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="8">
+          <td><b>4</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 07:25 AM
+            <div class="muted" style="font-size:11px">2 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 🔥 — part 4/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #4</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.instagram.com/reel/C4xyzDemo/" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="7">
+          <td><b>4</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 07:25 AM
+            <div class="muted" style="font-size:11px">2 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 🔥 — part 4/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #4</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg4" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="10">
+          <td><b>5</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 08:25 AM
+            <div class="muted" style="font-size:11px">1 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Best clip ✨ — part 5/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #5</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.instagram.com/reel/C5xyzDemo/" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="9">
+          <td><b>5</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 08:25 AM
+            <div class="muted" style="font-size:11px">1 ghante pehle</div>
+          </td>
+          <td style="max-width:330px">
+            Best clip ✨ — part 5/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #5</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag success">success</span>
+            
+          </td>
+          <td>
+            
+              <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg5" target="_blank" rel="noopener">Open ↗</a>
+            
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="12">
+          <td><b>6</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 09:25 AM
+            <div class="muted" style="font-size:11px">abhi</div>
+          </td>
+          <td style="max-width:330px">
+            Amazing clip 🚀 — part 6/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #6</div>
+            
+            
+            
+              <div style="font-size:11px;color:var(--err)">Instagram ne video process nahi kiya: video format supported nahi hai</div>
+            
+          </td>
+          <td>
+            <span class="tag failed">failed</span>
+            <div class="muted" style="font-size:11px">2 tries</div>
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm">Retry</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="11">
+          <td><b>6</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 09:25 AM
+            <div class="muted" style="font-size:11px">abhi</div>
+          </td>
+          <td style="max-width:330px">
+            Amazing clip 🚀 — part 6/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #6</div>
+            
+            
+              <div class="bar" data-progress-for="11" style="margin-top:6px">
+                <i style="width: 62%"></i>
+              </div>
+            
+            
+          </td>
+          <td>
+            <span class="tag running">running</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="14">
+          <td><b>7</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 10:25 AM
+            <div class="muted" style="font-size:11px">59 min baad</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 💯 — part 7/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #7</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="13">
+          <td><b>7</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 10:25 AM
+            <div class="muted" style="font-size:11px">59 min baad</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 💯 — part 7/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #7</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="16">
+          <td><b>8</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 11:25 AM
+            <div class="muted" style="font-size:11px">1 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 🔥 — part 8/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #8</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="15">
+          <td><b>8</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 11:25 AM
+            <div class="muted" style="font-size:11px">1 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 🔥 — part 8/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #8</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="18">
+          <td><b>9</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 12:25 PM
+            <div class="muted" style="font-size:11px">2 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Best clip ✨ — part 9/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #9</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="17">
+          <td><b>9</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 12:25 PM
+            <div class="muted" style="font-size:11px">2 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Best clip ✨ — part 9/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #9</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="20">
+          <td><b>10</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 01:25 PM
+            <div class="muted" style="font-size:11px">3 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Amazing clip 🚀 — part 10/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #10</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="19">
+          <td><b>10</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 01:25 PM
+            <div class="muted" style="font-size:11px">3 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Amazing clip 🚀 — part 10/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #10</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="22">
+          <td><b>11</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 02:25 PM
+            <div class="muted" style="font-size:11px">4 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 💯 — part 11/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #11</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="21">
+          <td><b>11</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 02:25 PM
+            <div class="muted" style="font-size:11px">4 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 💯 — part 11/24
+            
+              <div class="muted" style="font-size:11px">💬 Mast video ✨ — Follow kar do! #11</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="24">
+          <td><b>12</b></td>
+          <td><span class="tag ig">
+            IG</span></td>
+          <td>
+            17 Aug, 03:25 PM
+            <div class="muted" style="font-size:11px">5 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 🔥 — part 12/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #12</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+        <tr data-upload-row="23">
+          <td><b>12</b></td>
+          <td><span class="tag yt">
+            YT</span></td>
+          <td>
+            17 Aug, 03:25 PM
+            <div class="muted" style="font-size:11px">5 ghante baad</div>
+          </td>
+          <td style="max-width:330px">
+            Superb clip 🔥 — part 12/24
+            
+              <div class="muted" style="font-size:11px">💬 Nice video 🔥 — Subscribe kar do! #12</div>
+            
+            
+            
+          </td>
+          <td>
+            <span class="tag pending">pending</span>
+            
+          </td>
+          <td>
+            <span class="muted">—</span>
+          </td>
+          <td>
+            <div class="btn-row">
+              
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="#">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              
+            </div>
+          </td>
+        </tr>
+      
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>▤ Is campaign ke logs</h2>
+  
+    <div class="table-wrap">
+      <table>
+        <tbody>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag failed">error</span></td>
+            <td>Quota khatam. Upload #7 aur 11 baaki uploads kal shift kar diye.</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag running">warn</span></td>
+            <td>Upload #6 fail hua (attempt 2/3), 10 min baad retry: video format supported nahi hai</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td>YouTube upload #4 done: https://www.youtube.com/watch?v=dQw4w9Wg4</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag running">warn</span></td>
+            <td>Thumbnail set nahi hua: The thumbnail image is too large.</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td>Instagram reel #1 publish hua: https://www.instagram.com/reel/C1xyzDemo/</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td>Comment post hua: Nice video 🔥 — Subscribe kar do! #1</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td>YouTube upload #1 done: https://www.youtube.com/watch?v=dQw4w9Wg1</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td>Schedule banaya: 24 uploads, har 60 minute</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td>Campaign &#39;Motivation Reel — August&#39; banaya</td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td>Scheduler start hua (har 30s par check)</td>
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
+  
+</div>
+
+
+
+    <footer class="foot">
+      Smart Tube · sab kuch isi website se manage hota hai · server time
+      <span id="servertime">—</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  const EMOJIS = ["🔥","✨","🚀","💯","🎬","😍","👌","⚡","🌟","🎯"];
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  function renderTemplate(tpl, n, total) {
+    const now = new Date();
+    const pad = (x) => String(x).padStart(2, "0");
+    const vars = {
+      n: String(n), nn: pad(n), total: String(total),
+      date: `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`,
+      time: `${pad(now.getHours())}:${pad(now.getMinutes())}`,
+      day: now.toLocaleDateString("en", { weekday: "long" }),
+      campaign: "Demo Campaign",
+      rand: String(1000 + Math.floor(Math.random() * 9000)),
+      emoji: pick(EMOJIS),
+    };
+    let out = tpl;
+    for (const [k, v] of Object.entries(vars)) out = out.split("{" + k + "}").join(v);
+    for (let i = 0; i < 20; i++) {
+      const m = out.match(/\{([^{}]*\|[^{}]*)\}/);
+      if (!m) break;
+      out = out.slice(0, m.index) + pick(m[1].split("|")) + out.slice(m.index + m[0].length);
+    }
+    return out.trim();
+  }
+
+  const realFetch = window.fetch.bind(window);
+  const json = (data) => Promise.resolve(new Response(JSON.stringify(data), {
+    status: 200, headers: { "Content-Type": "application/json" },
+  }));
+
+  window.fetch = function (input, init) {
+    const url = typeof input === "string" ? input : input.url;
+
+    if (url.includes("/api/preview")) {
+      const body = JSON.parse((init && init.body) || "{}");
+      const total = parseInt(body.total || 24, 10);
+      return json({ samples: [1, 2, 3].map((i) => renderTemplate(body.template || "", i, total)) });
+    }
+
+    if (url.includes("/api/quota")) {
+      const params = new URLSearchParams(url.split("?")[1] || "");
+      const interval = Math.max(parseInt(params.get("interval") || "60", 10), 1);
+      const perUpload = 1600 + (params.get("thumb") === "1" ? 50 : 0)
+                             + (params.get("comment") === "1" ? 50 : 0);
+      const perDay = Math.max(Math.floor(1440 / interval), 1);
+      const used = perUpload * perDay;
+      return json({
+        per_upload: perUpload, per_day: perDay, used: used, limit: 10000,
+        max_uploads: Math.floor(10000 / perUpload), over: used > 10000,
+      });
+    }
+
+    if (url.includes("/api/stats")) {
+      return json({ totals: {}, running: [], next: null, server_time: new Date().toISOString() });
+    }
+
+    return realFetch(input, init);
+  };
+
+  // Demo mein koi form submit nahi hona chahiye.
+  document.addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Ye demo hai — asli upload ke liye tool ko server ya PC par chalana padega.");
+  }, true);
+})();
+</script>
+<script src="assets/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Smart Tube{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">📺</span>
+      <div>
+        <strong>Smart Tube</strong>
+        <small>auto uploader</small>
+      </div>
+    </div>
+
+    <nav>
+      <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">
+        <span>▦</span> Dashboard
+      </a>
+      <a href="{{ url_for('campaign_new') }}" class="{{ 'active' if request.endpoint == 'campaign_new' }}">
+        <span>＋</span> New Campaign
+      </a>
+      <a href="{{ url_for('enter') }}" class="{{ 'active' if request.endpoint == 'enter' }}">
+        <span>🔑</span> API & Settings
+      </a>
+      <a href="{{ url_for('logs') }}" class="{{ 'active' if request.endpoint == 'logs' }}">
+        <span>▤</span> Logs
+      </a>
+    </nav>
+
+    <div class="conn-box">
+      <div class="conn {{ 'ok' if yt_connected else 'off' }}">
+        <span class="dot"></span>
+        <div>
+          <strong>YouTube</strong>
+          <small>{{ yt_channel.title if yt_channel else 'not connected' }}</small>
+        </div>
+      </div>
+      <div class="conn {{ 'ok' if ig_connected else 'off' }}">
+        <span class="dot"></span>
+        <div>
+          <strong>Instagram</strong>
+          <small>{{ '@' ~ ig_account.username if ig_account else 'not connected' }}</small>
+        </div>
+      </div>
+      <p class="tzline">🕒 {{ tz_name }}</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1>{% block heading %}Dashboard{% endblock %}</h1>
+      <div class="topbar-right">
+        <span id="clock" class="clock"></span>
+        {% block topbar_actions %}{% endblock %}
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <footer class="foot">
+      Smart Tube · sab kuch isi website se manage hota hai · server time
+      <span id="servertime">—</span>
+    </footer>
+  </main>
+</div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

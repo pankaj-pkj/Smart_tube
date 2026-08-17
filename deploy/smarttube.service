@@ -1,0 +1,22 @@
+# VPS par 24x7 chalane ke liye systemd unit.
+#   sudo cp deploy/smarttube.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now smarttube
+#   sudo journalctl -u smarttube -f      # live logs
+
+[Unit]
+Description=Smart Tube auto uploader
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/Smart_tube
+EnvironmentFile=/home/ubuntu/Smart_tube/.env
+# -w 1 zaruri hai: 2 workers = 2 scheduler = duplicate uploads.
+ExecStart=/home/ubuntu/Smart_tube/.venv/bin/gunicorn app:app -w 1 --threads 8 -b 127.0.0.1:8000 --timeout 1800
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

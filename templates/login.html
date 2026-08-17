@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Tube · Unlock</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="login-wrap">
+  <form class="card login-card" method="post">
+    <h2>📺 Smart Tube</h2>
+    <p class="sub">Aage badhne ke liye PIN daalo.</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+    <div class="field">
+      <label for="pin">PIN</label>
+      <input type="password" id="pin" name="pin" autofocus autocomplete="current-password">
+    </div>
+    <button class="btn primary" style="width:100%">Unlock</button>
+  </form>
+</div>
+</body>
+</html>

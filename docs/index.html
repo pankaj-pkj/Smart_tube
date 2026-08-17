@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard · Smart Tube</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
+
+<style>
+  .demo-banner {
+    position: sticky; top: 0; z-index: 50;
+    background: linear-gradient(90deg, rgba(255,61,84,.22), rgba(124,92,255,.18));
+    border-bottom: 1px solid var(--line);
+    padding: 9px 16px; font-size: 12.5px; color: var(--text);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  .demo-banner a { color: #b9a6ff; text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="demo-banner">
+  <b>🎬 DEMO</b> — ye sirf UI preview hai (GitHub Pages par static chal raha hai).
+  Asli tool Python se chalta hai: video upload, scheduling aur auto-comment tabhi hote
+  hain jab app kisi server ya PC par chal raha ho.
+  <a href="https://github.com/pankaj-pkj/Smart_tube" target="_blank" rel="noopener">Source ↗</a>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">📺</span>
+      <div>
+        <strong>Smart Tube</strong>
+        <small>auto uploader</small>
+      </div>
+    </div>
+
+    <nav>
+      <a href="index.html" class="active">
+        <span>▦</span> Dashboard
+      </a>
+      <a href="new.html" class="">
+        <span>＋</span> New Campaign
+      </a>
+      <a href="enter.html" class="">
+        <span>🔑</span> API & Settings
+      </a>
+      <a href="logs.html" class="">
+        <span>▤</span> Logs
+      </a>
+    </nav>
+
+    <div class="conn-box">
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>YouTube</strong>
+          <small>My Shorts Channel</small>
+        </div>
+      </div>
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>Instagram</strong>
+          <small>@my.reels.page</small>
+        </div>
+      </div>
+      <p class="tzline">🕒 Asia/Kolkata</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1>Dashboard</h1>
+      <div class="topbar-right">
+        <span id="clock" class="clock"></span>
+        
+  <a class="btn primary" href="new.html">＋ New campaign</a>
+
+      </div>
+    </header>
+
+    
+      
+    
+
+    
+
+
+
+<div class="grid cols-4">
+  <div class="stat ok"><b data-stat="success">10</b><span>Uploaded</span></div>
+  <div class="stat"><b data-stat="pending">12</b><span>Scheduled</span></div>
+  <div class="stat warn"><b data-stat="running">1</b><span>Running</span></div>
+  <div class="stat err"><b data-stat="failed">1</b><span>Failed</span></div>
+</div>
+
+<div class="card">
+  <h2>🎬 Campaigns</h2>
+  <p class="sub">Har campaign = ek video + uska poora upload schedule.</p>
+
+  
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th><th>Platform</th><th>Schedule</th><th>Progress</th>
+            <th>Next upload</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+        
+          <tr>
+            <td>
+              <a href="campaign.html"><b>Motivation Reel — August</b></a>
+              <div class="muted mono" style="font-size:11px">motivation_clip.mp4</div>
+            </td>
+            <td>
+              <span class="tag yt">YT</span>
+              <span class="tag ig">IG</span>
+            </td>
+            <td class="muted">har 60 min × 24</td>
+            <td style="min-width:130px">
+              <div class="bar"><i style="width: 42%"></i></div>
+              <small class="muted">10 / 24</small>
+            </td>
+            <td class="muted">
+              17 Aug, 10:25 AM<br><small>1 ghante baad</small>
+              
+            </td>
+            <td>
+              <span class="tag running">
+                running
+              </span>
+            </td>
+            <td>
+              <div class="btn-row">
+                
+                  <form class="inline" method="post" action="#">
+                    <button class="btn sm">Pause</button>
+                  </form>
+                
+                <a class="btn sm ghost" href="campaign.html">Open</a>
+              </div>
+            </td>
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
+  
+</div>
+
+<div class="grid cols-2">
+  <div class="card">
+    <h2>⏭️ Agle uploads</h2>
+    <p class="sub">Jo queue mein lage hain.</p>
+    
+      <div class="table-wrap">
+        <table>
+          <tbody>
+          
+            <tr>
+              <td><span class="tag yt">YT</span></td>
+              <td>
+                <b>#7</b> Superb clip 💯 — part 7/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 10:25 AM<br><small>1 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag ig">IG</span></td>
+              <td>
+                <b>#7</b> Superb clip 💯 — part 7/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 10:25 AM<br><small>1 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag yt">YT</span></td>
+              <td>
+                <b>#8</b> Superb clip 🔥 — part 8/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 11:25 AM<br><small>2 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag ig">IG</span></td>
+              <td>
+                <b>#8</b> Superb clip 🔥 — part 8/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 11:25 AM<br><small>2 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag yt">YT</span></td>
+              <td>
+                <b>#9</b> Best clip ✨ — part 9/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 12:25 PM<br><small>3 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag ig">IG</span></td>
+              <td>
+                <b>#9</b> Best clip ✨ — part 9/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 12:25 PM<br><small>3 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag yt">YT</span></td>
+              <td>
+                <b>#10</b> Amazing clip 🚀 — part 10/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 01:25 PM<br><small>4 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag ig">IG</span></td>
+              <td>
+                <b>#10</b> Amazing clip 🚀 — part 10/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 01:25 PM<br><small>4 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag yt">YT</span></td>
+              <td>
+                <b>#11</b> Superb clip 💯 — part 11/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 02:25 PM<br><small>5 ghante baad</small>
+              </td>
+            </tr>
+          
+            <tr>
+              <td><span class="tag ig">IG</span></td>
+              <td>
+                <b>#11</b> Superb clip 💯 — part 11/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+              </td>
+              <td class="muted" style="text-align:right">
+                17 Aug, 02:25 PM<br><small>5 ghante baad</small>
+              </td>
+            </tr>
+          
+          </tbody>
+        </table>
+      </div>
+    
+  </div>
+
+  <div class="card">
+    <h2>🕘 Recent activity</h2>
+    <p class="sub">Pichhle uploads ka result.</p>
+    
+      <div class="table-wrap">
+        <table>
+          <tbody>
+          
+            <tr data-upload-row="12">
+              <td><span class="tag failed">failed</span></td>
+              <td>
+                <b>#6</b> Amazing clip 🚀 — part 6/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                <div class="muted" style="font-size:11px;color:var(--err)">Instagram ne video process nahi kiya: video format supported nahi hai</div>
+              </td>
+              <td style="text-align:right">
+                
+                <div class="muted" style="font-size:11px">abhi</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="11">
+              <td><span class="tag running">running</span></td>
+              <td>
+                <b>#6</b> Amazing clip 🚀 — part 6/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                  <div class="bar" data-progress-for="11" style="margin-top:5px">
+                    <i style="width: 62%"></i>
+                  </div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                
+                <div class="muted" style="font-size:11px">abhi</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="9">
+              <td><span class="tag success">success</span></td>
+              <td>
+                <b>#5</b> Best clip ✨ — part 5/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg5" target="_blank" rel="noopener">Open</a>
+                <div class="muted" style="font-size:11px">58 min pehle</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="10">
+              <td><span class="tag success">success</span></td>
+              <td>
+                <b>#5</b> Best clip ✨ — part 5/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                <a class="btn sm ghost" href="https://www.instagram.com/reel/C5xyzDemo/" target="_blank" rel="noopener">Open</a>
+                <div class="muted" style="font-size:11px">58 min pehle</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="7">
+              <td><span class="tag success">success</span></td>
+              <td>
+                <b>#4</b> Superb clip 🔥 — part 4/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg4" target="_blank" rel="noopener">Open</a>
+                <div class="muted" style="font-size:11px">1 ghante pehle</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="8">
+              <td><span class="tag success">success</span></td>
+              <td>
+                <b>#4</b> Superb clip 🔥 — part 4/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                <a class="btn sm ghost" href="https://www.instagram.com/reel/C4xyzDemo/" target="_blank" rel="noopener">Open</a>
+                <div class="muted" style="font-size:11px">1 ghante pehle</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="5">
+              <td><span class="tag success">success</span></td>
+              <td>
+                <b>#3</b> Superb clip 💯 — part 3/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg3" target="_blank" rel="noopener">Open</a>
+                <div class="muted" style="font-size:11px">2 ghante pehle</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="6">
+              <td><span class="tag success">success</span></td>
+              <td>
+                <b>#3</b> Superb clip 💯 — part 3/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                <a class="btn sm ghost" href="https://www.instagram.com/reel/C3xyzDemo/" target="_blank" rel="noopener">Open</a>
+                <div class="muted" style="font-size:11px">2 ghante pehle</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="3">
+              <td><span class="tag success">success</span></td>
+              <td>
+                <b>#2</b> Amazing clip 🚀 — part 2/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                <a class="btn sm ghost" href="https://www.youtube.com/watch?v=dQw4w9Wg2" target="_blank" rel="noopener">Open</a>
+                <div class="muted" style="font-size:11px">3 ghante pehle</div>
+              </td>
+            </tr>
+          
+            <tr data-upload-row="4">
+              <td><span class="tag success">success</span></td>
+              <td>
+                <b>#2</b> Amazing clip 🚀 — part 2/24
+                <div class="muted" style="font-size:11px">Motivation Reel — August</div>
+                
+                
+              </td>
+              <td style="text-align:right">
+                <a class="btn sm ghost" href="https://www.instagram.com/reel/C2xyzDemo/" target="_blank" rel="noopener">Open</a>
+                <div class="muted" style="font-size:11px">3 ghante pehle</div>
+              </td>
+            </tr>
+          
+          </tbody>
+        </table>
+      </div>
+    
+  </div>
+</div>
+
+
+
+    <footer class="foot">
+      Smart Tube · sab kuch isi website se manage hota hai · server time
+      <span id="servertime">—</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  const EMOJIS = ["🔥","✨","🚀","💯","🎬","😍","👌","⚡","🌟","🎯"];
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  function renderTemplate(tpl, n, total) {
+    const now = new Date();
+    const pad = (x) => String(x).padStart(2, "0");
+    const vars = {
+      n: String(n), nn: pad(n), total: String(total),
+      date: `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`,
+      time: `${pad(now.getHours())}:${pad(now.getMinutes())}`,
+      day: now.toLocaleDateString("en", { weekday: "long" }),
+      campaign: "Demo Campaign",
+      rand: String(1000 + Math.floor(Math.random() * 9000)),
+      emoji: pick(EMOJIS),
+    };
+    let out = tpl;
+    for (const [k, v] of Object.entries(vars)) out = out.split("{" + k + "}").join(v);
+    for (let i = 0; i < 20; i++) {
+      const m = out.match(/\{([^{}]*\|[^{}]*)\}/);
+      if (!m) break;
+      out = out.slice(0, m.index) + pick(m[1].split("|")) + out.slice(m.index + m[0].length);
+    }
+    return out.trim();
+  }
+
+  const realFetch = window.fetch.bind(window);
+  const json = (data) => Promise.resolve(new Response(JSON.stringify(data), {
+    status: 200, headers: { "Content-Type": "application/json" },
+  }));
+
+  window.fetch = function (input, init) {
+    const url = typeof input === "string" ? input : input.url;
+
+    if (url.includes("/api/preview")) {
+      const body = JSON.parse((init && init.body) || "{}");
+      const total = parseInt(body.total || 24, 10);
+      return json({ samples: [1, 2, 3].map((i) => renderTemplate(body.template || "", i, total)) });
+    }
+
+    if (url.includes("/api/quota")) {
+      const params = new URLSearchParams(url.split("?")[1] || "");
+      const interval = Math.max(parseInt(params.get("interval") || "60", 10), 1);
+      const perUpload = 1600 + (params.get("thumb") === "1" ? 50 : 0)
+                             + (params.get("comment") === "1" ? 50 : 0);
+      const perDay = Math.max(Math.floor(1440 / interval), 1);
+      const used = perUpload * perDay;
+      return json({
+        per_upload: perUpload, per_day: perDay, used: used, limit: 10000,
+        max_uploads: Math.floor(10000 / perUpload), over: used > 10000,
+      });
+    }
+
+    if (url.includes("/api/stats")) {
+      return json({ totals: {}, running: [], next: null, server_time: new Date().toISOString() });
+    }
+
+    return realFetch(input, init);
+  };
+
+  // Demo mein koi form submit nahi hona chahiye.
+  document.addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Ye demo hai — asli upload ke liye tool ko server ya PC par chalana padega.");
+  }, true);
+})();
+</script>
+<script src="assets/app.js"></script>
+
+</body>
+</html>

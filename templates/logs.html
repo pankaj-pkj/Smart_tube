@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Logs · Smart Tube{% endblock %}
+{% block heading %}Logs{% endblock %}
+
+{% block topbar_actions %}
+  <div class="btn-row">
+    <a class="btn sm {{ 'primary' if not level }}" href="{{ url_for('logs') }}">All</a>
+    <a class="btn sm {{ 'primary' if level == 'info' }}" href="{{ url_for('logs', level='info') }}">Info</a>
+    <a class="btn sm {{ 'primary' if level == 'warn' }}" href="{{ url_for('logs', level='warn') }}">Warn</a>
+    <a class="btn sm {{ 'primary' if level == 'error' }}" href="{{ url_for('logs', level='error') }}">Error</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h2>▤ Activity log</h2>
+  <p class="sub">Pichhli 300 entries. Har upload, comment aur error yahin dikhta hai.</p>
+  {% if rows %}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Time</th><th>Level</th><th>Source</th><th>Message</th></tr></thead>
+        <tbody>
+        {% for l in rows %}
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">{{ l.ts|localtime('%d %b %H:%M:%S') }}</td>
+            <td><span class="tag {{ 'failed' if l.level == 'error' else ('running' if l.level == 'warn' else '') }}">{{ l.level }}</span></td>
+            <td class="muted">{{ l.source or '—' }}</td>
+            <td>
+              {{ l.message }}
+              {% if l.campaign_id %}
+                <a class="muted" style="font-size:11px"
+                   href="{{ url_for('campaign_detail', campaign_id=l.campaign_id) }}">· campaign #{{ l.campaign_id }}</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty">Koi log nahi mila.</div>
+  {% endif %}
+</div>
+{% endblock %}
