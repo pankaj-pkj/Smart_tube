@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Campaign · Smart Tube</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
+
+<style>
+  .demo-banner {
+    position: sticky; top: 0; z-index: 50;
+    background: linear-gradient(90deg, rgba(255,61,84,.22), rgba(124,92,255,.18));
+    border-bottom: 1px solid var(--line);
+    padding: 9px 16px; font-size: 12.5px; color: var(--text);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  .demo-banner a { color: #b9a6ff; text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="demo-banner">
+  <b>🎬 DEMO</b> — ye sirf UI preview hai (GitHub Pages par static chal raha hai).
+  Asli tool Python se chalta hai: video upload, scheduling aur auto-comment tabhi hote
+  hain jab app kisi server ya PC par chal raha ho.
+  <a href="https://github.com/pankaj-pkj/Smart_tube" target="_blank" rel="noopener">Source ↗</a>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">📺</span>
+      <div>
+        <strong>Smart Tube</strong>
+        <small>auto uploader</small>
+      </div>
+    </div>
+
+    <nav>
+      <a href="index.html" class="">
+        <span>▦</span> Dashboard
+      </a>
+      <a href="new.html" class="active">
+        <span>＋</span> New Campaign
+      </a>
+      <a href="enter.html" class="">
+        <span>🔑</span> API & Settings
+      </a>
+      <a href="logs.html" class="">
+        <span>▤</span> Logs
+      </a>
+    </nav>
+
+    <div class="conn-box">
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>YouTube</strong>
+          <small>My Shorts Channel</small>
+        </div>
+      </div>
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>Instagram</strong>
+          <small>@my.reels.page</small>
+        </div>
+      </div>
+      <p class="tzline">🕒 Asia/Kolkata</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1>New Campaign</h1>
+      <div class="topbar-right">
+        <span id="clock" class="clock"></span>
+        
+      </div>
+    </header>
+
+    
+      
+    
+
+    
+
+
+
+<form method="post" enctype="multipart/form-data">
+
+  <div class="card">
+    <h2>1️⃣ Video aur platform</h2>
+    <p class="sub">Ek hi video file baar-baar upload hogi, har baar naye title/comment ke saath.</p>
+
+    <div class="row">
+      <div class="field">
+        <label for="name">Campaign name</label>
+        <input type="text" id="name" name="name" required placeholder="Motivation reel — August">
+      </div>
+      <div class="field">
+        <label for="platform">Platform</label>
+        <select id="platform" name="platform">
+          <option value="youtube">YouTube only</option>
+          <option value="instagram">Instagram only</option>
+          <option value="both">YouTube + Instagram (dono)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="video">Video file</label>
+        <input type="file" id="video" name="video" accept="video/*" required data-max-mb="512">
+        <p class="hint" id="video_info">Max 512 MB · mp4 / mov / webm / mkv</p>
+      </div>
+      <div class="field" data-only="youtube">
+        <label for="thumbnail">Thumbnail (optional)</label>
+        <input type="file" id="thumbnail" name="thumbnail" accept="image/jpeg,image/png">
+        <p class="hint">JPG/PNG, 1280×720. Sirf YouTube par lagta hai.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2️⃣ Title, description aur comment</h2>
+    <p class="sub">
+      Variables use karo taaki har upload alag lage:
+      <code>{n}</code> <code>{nn}</code> <code>{total}</code> <code>{date}</code>
+      <code>{time}</code> <code>{day}</code> <code>{rand}</code> <code>{emoji}</code>.
+      Spintax bhi chalta hai: <code>{Best|Top|Superb}</code>.
+    </p>
+
+    <div class="field" data-only="youtube">
+      <label for="title_tpl">YouTube title</label>
+      <input type="text" id="title_tpl" name="title_tpl" required maxlength="200"
+             value="{Amazing|Superb|Best} clip {emoji} — part {n}/{total}">
+      <div class="preview-box" id="title_preview" style="margin-top:8px"></div>
+    </div>
+
+    <div class="field" data-only="youtube">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4"
+                placeholder="Upload #{n} · {date} {time}&#10;&#10;#shorts #viral"></textarea>
+    </div>
+
+    <div class="row" data-only="youtube">
+      <div class="field">
+        <label for="tags">Tags (comma se alag)</label>
+        <input type="text" id="tags" name="tags" placeholder="shorts, viral, motivation">
+      </div>
+      <div class="field">
+        <label for="category_id">Category</label>
+        <select id="category_id" name="category_id">
+          <option value="22">People &amp; Blogs</option><option value="24">Entertainment</option><option value="10">Music</option><option value="20">Gaming</option><option value="23">Comedy</option><option value="27">Education</option><option value="28">Science &amp; Technology</option><option value="17">Sports</option><option value="26">Howto &amp; Style</option><option value="25">News &amp; Politics</option><option value="19">Travel &amp; Events</option><option value="15">Pets &amp; Animals</option><option value="1">Film &amp; Animation</option><option value="2">Autos &amp; Vehicles</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="privacy">Privacy</label>
+        <select id="privacy" name="privacy">
+          <option value="public">Public</option>
+          <option value="unlisted">Unlisted</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="comment_tpl">Auto comment (har upload ke baad post hoga)</label>
+      <input type="text" id="comment_tpl" name="comment_tpl"
+             value="{Nice|Superb|Mast} video {emoji} — {Subscribe|Follow} kar do! #{n}">
+      <div class="preview-box" id="comment_preview" style="margin-top:8px"></div>
+      <p class="hint">Khali chhod doge to koi comment post nahi hoga.</p>
+    </div>
+
+    <div class="check" data-only="youtube">
+      <input type="checkbox" id="pin_comment" name="pin_comment">
+      <label for="pin_comment">Comment ko pin karne ki koshish karo (YouTube API par best-effort hai)</label>
+    </div>
+    <div class="check" data-only="youtube">
+      <input type="checkbox" id="made_for_kids" name="made_for_kids">
+      <label for="made_for_kids">Made for kids</label>
+    </div>
+
+    <div data-only="instagram" style="display:none">
+      <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
+      <div class="field">
+        <label for="ig_caption_tpl">Instagram caption (khali = YouTube title use hoga)</label>
+        <input type="text" id="ig_caption_tpl" name="ig_caption_tpl"
+               placeholder="{Reel|Clip} #{n} {emoji} #reels #viral">
+      </div>
+      <div class="field">
+        <label for="ig_comment_tpl">Instagram comment (khali = upar wala comment use hoga)</label>
+        <input type="text" id="ig_comment_tpl" name="ig_comment_tpl" placeholder="Follow for more {emoji}">
+      </div>
+      <div class="check">
+        <input type="checkbox" id="ig_share_to_feed" name="ig_share_to_feed" checked>
+        <label for="ig_share_to_feed">Reel ko feed par bhi dikhao</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3️⃣ Schedule</h2>
+    <p class="sub">Client ki demand: 1 video har 1 ghante = 24 ghante mein 24 uploads. Default wahi set hai.</p>
+
+    <div class="row">
+      <div class="field">
+        <label for="interval_minutes">Gap (minutes)</label>
+        <input type="number" id="interval_minutes" name="interval_minutes" value="60" min="1" max="10080">
+        <p class="hint">60 = har ghante ek upload</p>
+      </div>
+      <div class="field">
+        <label for="total_uploads">Total uploads</label>
+        <input type="number" id="total_uploads" name="total_uploads" value="24" min="1" max="500">
+      </div>
+      <div class="field">
+        <label for="start_at">Start time (Asia/Kolkata)</label>
+        <input type="datetime-local" id="start_at" name="start_at" value="2026-08-17T09:30">
+      </div>
+    </div>
+
+    <p class="hint" id="schedule_summary" style="font-size:13px"></p>
+    <div class="note info" id="quota_box"></div>
+
+    <div class="check">
+      <input type="checkbox" id="start_now" name="start_now" checked>
+      <label for="start_now">Campaign banate hi chalu kar do (warna paused rahega)</label>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn primary" type="submit">Campaign banao aur schedule karo</button>
+    <a class="btn ghost" href="index.html">Cancel</a>
+  </div>
+</form>
+
+
+
+    <footer class="foot">
+      Smart Tube · sab kuch isi website se manage hota hai · server time
+      <span id="servertime">—</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  const EMOJIS = ["🔥","✨","🚀","💯","🎬","😍","👌","⚡","🌟","🎯"];
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  function renderTemplate(tpl, n, total) {
+    const now = new Date();
+    const pad = (x) => String(x).padStart(2, "0");
+    const vars = {
+      n: String(n), nn: pad(n), total: String(total),
+      date: `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`,
+      time: `${pad(now.getHours())}:${pad(now.getMinutes())}`,
+      day: now.toLocaleDateString("en", { weekday: "long" }),
+      campaign: "Demo Campaign",
+      rand: String(1000 + Math.floor(Math.random() * 9000)),
+      emoji: pick(EMOJIS),
+    };
+    let out = tpl;
+    for (const [k, v] of Object.entries(vars)) out = out.split("{" + k + "}").join(v);
+    for (let i = 0; i < 20; i++) {
+      const m = out.match(/\{([^{}]*\|[^{}]*)\}/);
+      if (!m) break;
+      out = out.slice(0, m.index) + pick(m[1].split("|")) + out.slice(m.index + m[0].length);
+    }
+    return out.trim();
+  }
+
+  const realFetch = window.fetch.bind(window);
+  const json = (data) => Promise.resolve(new Response(JSON.stringify(data), {
+    status: 200, headers: { "Content-Type": "application/json" },
+  }));
+
+  window.fetch = function (input, init) {
+    const url = typeof input === "string" ? input : input.url;
+
+    if (url.includes("/api/preview")) {
+      const body = JSON.parse((init && init.body) || "{}");
+      const total = parseInt(body.total || 24, 10);
+      return json({ samples: [1, 2, 3].map((i) => renderTemplate(body.template || "", i, total)) });
+    }
+
+    if (url.includes("/api/quota")) {
+      const params = new URLSearchParams(url.split("?")[1] || "");
+      const interval = Math.max(parseInt(params.get("interval") || "60", 10), 1);
+      const perUpload = 1600 + (params.get("thumb") === "1" ? 50 : 0)
+                             + (params.get("comment") === "1" ? 50 : 0);
+      const perDay = Math.max(Math.floor(1440 / interval), 1);
+      const used = perUpload * perDay;
+      return json({
+        per_upload: perUpload, per_day: perDay, used: used, limit: 10000,
+        max_uploads: Math.floor(10000 / perUpload), over: used > 10000,
+      });
+    }
+
+    if (url.includes("/api/stats")) {
+      return json({ totals: {}, running: [], next: null, server_time: new Date().toISOString() });
+    }
+
+    return realFetch(input, init);
+  };
+
+  // Demo mein koi form submit nahi hona chahiye.
+  document.addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Ye demo hai — asli upload ke liye tool ko server ya PC par chalana padega.");
+  }, true);
+})();
+</script>
+<script src="assets/app.js"></script>
+
+</body>
+</html>

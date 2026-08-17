@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logs · Smart Tube</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
+
+<style>
+  .demo-banner {
+    position: sticky; top: 0; z-index: 50;
+    background: linear-gradient(90deg, rgba(255,61,84,.22), rgba(124,92,255,.18));
+    border-bottom: 1px solid var(--line);
+    padding: 9px 16px; font-size: 12.5px; color: var(--text);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  .demo-banner a { color: #b9a6ff; text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="demo-banner">
+  <b>🎬 DEMO</b> — ye sirf UI preview hai (GitHub Pages par static chal raha hai).
+  Asli tool Python se chalta hai: video upload, scheduling aur auto-comment tabhi hote
+  hain jab app kisi server ya PC par chal raha ho.
+  <a href="https://github.com/pankaj-pkj/Smart_tube" target="_blank" rel="noopener">Source ↗</a>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">📺</span>
+      <div>
+        <strong>Smart Tube</strong>
+        <small>auto uploader</small>
+      </div>
+    </div>
+
+    <nav>
+      <a href="index.html" class="">
+        <span>▦</span> Dashboard
+      </a>
+      <a href="new.html" class="">
+        <span>＋</span> New Campaign
+      </a>
+      <a href="enter.html" class="">
+        <span>🔑</span> API & Settings
+      </a>
+      <a href="logs.html" class="active">
+        <span>▤</span> Logs
+      </a>
+    </nav>
+
+    <div class="conn-box">
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>YouTube</strong>
+          <small>My Shorts Channel</small>
+        </div>
+      </div>
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>Instagram</strong>
+          <small>@my.reels.page</small>
+        </div>
+      </div>
+      <p class="tzline">🕒 Asia/Kolkata</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1>Logs</h1>
+      <div class="topbar-right">
+        <span id="clock" class="clock"></span>
+        
+  <div class="btn-row">
+    <a class="btn sm primary" href="logs.html">All</a>
+    <a class="btn sm " href="logs.html">Info</a>
+    <a class="btn sm " href="logs.html">Warn</a>
+    <a class="btn sm " href="logs.html">Error</a>
+  </div>
+
+      </div>
+    </header>
+
+    
+      
+    
+
+    
+<div class="card">
+  <h2>▤ Activity log</h2>
+  <p class="sub">Pichhli 300 entries. Har upload, comment aur error yahin dikhta hai.</p>
+  
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Time</th><th>Level</th><th>Source</th><th>Message</th></tr></thead>
+        <tbody>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag failed">error</span></td>
+            <td class="muted">youtube</td>
+            <td>
+              Quota khatam. Upload #7 aur 11 baaki uploads kal shift kar diye.
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag running">warn</span></td>
+            <td class="muted">instagram</td>
+            <td>
+              Upload #6 fail hua (attempt 2/3), 10 min baad retry: video format supported nahi hai
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td class="muted">youtube</td>
+            <td>
+              YouTube upload #4 done: https://www.youtube.com/watch?v=dQw4w9Wg4
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag running">warn</span></td>
+            <td class="muted">youtube</td>
+            <td>
+              Thumbnail set nahi hua: The thumbnail image is too large.
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td class="muted">instagram</td>
+            <td>
+              Instagram reel #1 publish hua: https://www.instagram.com/reel/C1xyzDemo/
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td class="muted">youtube</td>
+            <td>
+              Comment post hua: Nice video 🔥 — Subscribe kar do! #1
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td class="muted">youtube</td>
+            <td>
+              YouTube upload #1 done: https://www.youtube.com/watch?v=dQw4w9Wg1
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td class="muted">scheduler</td>
+            <td>
+              Schedule banaya: 24 uploads, har 60 minute
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td class="muted">app</td>
+            <td>
+              Campaign &#39;Motivation Reel — August&#39; banaya
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 08:15:09</td>
+            <td><span class="tag ">info</span></td>
+            <td class="muted">scheduler</td>
+            <td>
+              Scheduler start hua (har 30s par check)
+              
+                <a class="muted" style="font-size:11px"
+                   href="campaign.html">· campaign #1</a>
+              
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">17 Aug 09:25:09</td>
+            <td><span class="tag ">info</span></td>
+            <td class="muted">scheduler</td>
+            <td>
+              Scheduler start hua (har 3600s par check)
+              
+            </td>
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
+  
+</div>
+
+
+    <footer class="foot">
+      Smart Tube · sab kuch isi website se manage hota hai · server time
+      <span id="servertime">—</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  const EMOJIS = ["🔥","✨","🚀","💯","🎬","😍","👌","⚡","🌟","🎯"];
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  function renderTemplate(tpl, n, total) {
+    const now = new Date();
+    const pad = (x) => String(x).padStart(2, "0");
+    const vars = {
+      n: String(n), nn: pad(n), total: String(total),
+      date: `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`,
+      time: `${pad(now.getHours())}:${pad(now.getMinutes())}`,
+      day: now.toLocaleDateString("en", { weekday: "long" }),
+      campaign: "Demo Campaign",
+      rand: String(1000 + Math.floor(Math.random() * 9000)),
+      emoji: pick(EMOJIS),
+    };
+    let out = tpl;
+    for (const [k, v] of Object.entries(vars)) out = out.split("{" + k + "}").join(v);
+    for (let i = 0; i < 20; i++) {
+      const m = out.match(/\{([^{}]*\|[^{}]*)\}/);
+      if (!m) break;
+      out = out.slice(0, m.index) + pick(m[1].split("|")) + out.slice(m.index + m[0].length);
+    }
+    return out.trim();
+  }
+
+  const realFetch = window.fetch.bind(window);
+  const json = (data) => Promise.resolve(new Response(JSON.stringify(data), {
+    status: 200, headers: { "Content-Type": "application/json" },
+  }));
+
+  window.fetch = function (input, init) {
+    const url = typeof input === "string" ? input : input.url;
+
+    if (url.includes("/api/preview")) {
+      const body = JSON.parse((init && init.body) || "{}");
+      const total = parseInt(body.total || 24, 10);
+      return json({ samples: [1, 2, 3].map((i) => renderTemplate(body.template || "", i, total)) });
+    }
+
+    if (url.includes("/api/quota")) {
+      const params = new URLSearchParams(url.split("?")[1] || "");
+      const interval = Math.max(parseInt(params.get("interval") || "60", 10), 1);
+      const perUpload = 1600 + (params.get("thumb") === "1" ? 50 : 0)
+                             + (params.get("comment") === "1" ? 50 : 0);
+      const perDay = Math.max(Math.floor(1440 / interval), 1);
+      const used = perUpload * perDay;
+      return json({
+        per_upload: perUpload, per_day: perDay, used: used, limit: 10000,
+        max_uploads: Math.floor(10000 / perUpload), over: used > 10000,
+      });
+    }
+
+    if (url.includes("/api/stats")) {
+      return json({ totals: {}, running: [], next: null, server_time: new Date().toISOString() });
+    }
+
+    return realFetch(input, init);
+  };
+
+  // Demo mein koi form submit nahi hona chahiye.
+  document.addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Ye demo hai — asli upload ke liye tool ko server ya PC par chalana padega.");
+  }, true);
+})();
+</script>
+<script src="assets/app.js"></script>
+
+</body>
+</html>

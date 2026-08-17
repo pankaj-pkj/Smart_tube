@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API & Settings · Smart Tube</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
+
+<style>
+  .demo-banner {
+    position: sticky; top: 0; z-index: 50;
+    background: linear-gradient(90deg, rgba(255,61,84,.22), rgba(124,92,255,.18));
+    border-bottom: 1px solid var(--line);
+    padding: 9px 16px; font-size: 12.5px; color: var(--text);
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  }
+  .demo-banner a { color: #b9a6ff; text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="demo-banner">
+  <b>🎬 DEMO</b> — ye sirf UI preview hai (GitHub Pages par static chal raha hai).
+  Asli tool Python se chalta hai: video upload, scheduling aur auto-comment tabhi hote
+  hain jab app kisi server ya PC par chal raha ho.
+  <a href="https://github.com/pankaj-pkj/Smart_tube" target="_blank" rel="noopener">Source ↗</a>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">📺</span>
+      <div>
+        <strong>Smart Tube</strong>
+        <small>auto uploader</small>
+      </div>
+    </div>
+
+    <nav>
+      <a href="index.html" class="">
+        <span>▦</span> Dashboard
+      </a>
+      <a href="new.html" class="">
+        <span>＋</span> New Campaign
+      </a>
+      <a href="enter.html" class="active">
+        <span>🔑</span> API & Settings
+      </a>
+      <a href="logs.html" class="">
+        <span>▤</span> Logs
+      </a>
+    </nav>
+
+    <div class="conn-box">
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>YouTube</strong>
+          <small>My Shorts Channel</small>
+        </div>
+      </div>
+      <div class="conn ok">
+        <span class="dot"></span>
+        <div>
+          <strong>Instagram</strong>
+          <small>@my.reels.page</small>
+        </div>
+      </div>
+      <p class="tzline">🕒 Asia/Kolkata</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1>API & Settings</h1>
+      <div class="topbar-right">
+        <span id="clock" class="clock"></span>
+        
+      </div>
+    </header>
+
+    
+      
+    
+
+    
+
+<div class="note info">
+  Yahan jo bhi keys daaloge wo isi server ki SQLite file mein save hongi. Ye page
+  hi poore tool ka setup hai — ek baar bhar do, phir sirf dashboard use karna hai.
+</div>
+
+<div class="grid cols-2">
+
+  <!-- ------------------------------------------------------- YouTube -->
+  <div class="card">
+    <h2>▶️ YouTube
+      <span class="tag success">connected</span>
+      
+    </h2>
+    <p class="sub">Google Cloud se OAuth client banao, ID/secret yahan paste karo, phir Connect dabao.</p>
+
+    
+      <div class="card" style="background:var(--bg-2);margin-bottom:16px">
+        <div class="btn-row" style="justify-content:space-between">
+          <div>
+            <strong>My Shorts Channel</strong><br>
+            <small class="muted">
+              12400 subscribers · 318 videos
+            </small>
+          </div>
+          <form method="post" action="#"
+                data-confirm="YouTube disconnect kar dein?">
+            <button class="btn sm danger">Disconnect</button>
+          </form>
+        </div>
+      </div>
+    
+
+    <form method="post">
+      <input type="hidden" name="section" value="youtube">
+      <div class="field">
+        <label for="yt_client_id">OAuth Client ID</label>
+        <input type="text" id="yt_client_id" name="yt_client_id" value="1234567890-democlient.apps.googleusercontent.com"
+               placeholder="1234567890-abcdef.apps.googleusercontent.com">
+      </div>
+      <div class="field">
+        <label for="yt_client_secret">OAuth Client Secret</label>
+        <input type="password" id="yt_client_secret" name="yt_client_secret"
+               value="GOCSPX-demo-secret-value" placeholder="GOCSPX-...">
+      </div>
+      <div class="btn-row">
+        <button class="btn">Save keys</button>
+        <a class="btn primary" href="#">
+          Reconnect
+        </a>
+      </div>
+    </form>
+
+    <p class="hint" style="margin-top:14px">Google Console mein ye <b>Authorized redirect URI</b> exactly daalna hai:</p>
+    <div class="btn-row">
+      <code class="mono" style="word-break:break-all">https://smarttube.example.com/auth/youtube/callback</code>
+      <button class="btn sm ghost" data-copy="https://smarttube.example.com/auth/youtube/callback">Copy</button>
+    </div>
+
+    <ol class="steps" style="margin-top:16px">
+      <li>console.cloud.google.com par project banao (free).</li>
+      <li><b>YouTube Data API v3</b> enable karo.</li>
+      <li>OAuth consent screen: type <b>External</b>, apni Gmail ko <b>Test user</b> mein add karo.</li>
+      <li>Credentials → Create → <b>OAuth client ID</b> → <b>Web application</b> → upar wala redirect URI paste karo.</li>
+      <li>Client ID + secret upar bharo, <b>Connect YouTube</b> dabao, Google par allow kar do.</li>
+    </ol>
+  </div>
+
+  <!-- ------------------------------------------------------- Instagram -->
+  <div class="card">
+    <h2>📸 Instagram
+      <span class="tag success">connected</span>
+      
+    </h2>
+    <p class="sub">Reels publish + auto comment. Graph API long-lived token chahiye.</p>
+
+    
+      <div class="card" style="background:var(--bg-2);margin-bottom:16px">
+        <div class="btn-row" style="justify-content:space-between">
+          <div>
+            <strong>@my.reels.page</strong><br>
+            <small class="muted">8420 followers · 96 posts</small>
+          </div>
+          <form method="post" action="#"
+                data-confirm="Instagram disconnect kar dein?">
+            <button class="btn sm danger">Disconnect</button>
+          </form>
+        </div>
+      </div>
+    
+
+    <form method="post">
+      <input type="hidden" name="section" value="instagram">
+      <div class="field">
+        <label for="ig_user_id">Instagram User ID (numeric)</label>
+        <input type="text" id="ig_user_id" name="ig_user_id" value="17841400000000000"
+               placeholder="17841400000000000">
+      </div>
+      <div class="field">
+        <label for="ig_access_token">
+          Long-lived Access Token <span class="tag success">saved</span>
+        </label>
+        <input type="password" id="ig_access_token" name="ig_access_token"
+               placeholder="Naya token daalo (khali = purana rahega)">
+      </div>
+      <div class="btn-row">
+        <button class="btn">Save & verify</button>
+      </div>
+    </form>
+    
+      <form method="post" action="#" style="margin-top:9px">
+        <button class="btn sm ghost">Token dobara test karo</button>
+      </form>
+    
+
+    <div class="note">
+      Instagram apni API se posting sirf <b>Business/Creator</b> account par deta hai jo ek
+      Facebook Page se linked ho — personal account par Meta khud allow nahi karta.
+      Switch karna free hai: Instagram app → Settings → Account type → Switch to Creator.
+    </div>
+
+    <ol class="steps">
+      <li>Instagram account ko <b>Creator/Business</b> banao aur ek Facebook Page se link karo.</li>
+      <li>developers.facebook.com par app banao → <b>Instagram Graph API</b> add karo.</li>
+      <li>Graph API Explorer se permissions lo: <code>instagram_basic</code>,
+          <code>instagram_content_publish</code>, <code>pages_show_list</code>,
+          <code>pages_read_engagement</code>.</li>
+      <li>Short token ko <b>60-din wale long-lived token</b> mein exchange karo.</li>
+      <li><code>/me/accounts</code> → Page ID → <code>?fields=instagram_business_account</code> se IG user ID milega.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ------------------------------------------------------- general -->
+<div class="card">
+  <h2>⚙️ General</h2>
+  <p class="sub">Timezone se saare schedule times decide hote hain. Public URL Instagram aur Google dono ke liye zaruri hai.</p>
+  <form method="post">
+    <input type="hidden" name="section" value="general">
+    <div class="row">
+      <div class="field">
+        <label for="public_base_url">Public base URL</label>
+        <input type="text" id="public_base_url" name="public_base_url" value="https://smarttube.example.com"
+               placeholder="https://mytool.onrender.com">
+        <p class="hint">Bina slash ke. Instagram isi URL se video download karta hai, isliye
+           server internet par reachable hona chahiye.</p>
+      </div>
+      <div class="field">
+        <label for="timezone">Timezone</label>
+        <select id="timezone" name="timezone">
+          
+            <option value="Asia/Kolkata" selected>Asia/Kolkata</option>
+          
+            <option value="UTC" >UTC</option>
+          
+            <option value="Asia/Dubai" >Asia/Dubai</option>
+          
+            <option value="Asia/Karachi" >Asia/Karachi</option>
+          
+            <option value="Europe/London" >Europe/London</option>
+          
+            <option value="America/New_York" >America/New_York</option>
+          
+            <option value="America/Los_Angeles" >America/Los_Angeles</option>
+          
+            <option value="Asia/Singapore" >Asia/Singapore</option>
+          
+            <option value="Australia/Sydney" >Australia/Sydney</option>
+          
+        </select>
+        <p class="hint">Abhi: Asia/Kolkata</p>
+      </div>
+    </div>
+    <button class="btn primary">Save settings</button>
+  </form>
+</div>
+
+
+
+    <footer class="foot">
+      Smart Tube · sab kuch isi website se manage hota hai · server time
+      <span id="servertime">—</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  const EMOJIS = ["🔥","✨","🚀","💯","🎬","😍","👌","⚡","🌟","🎯"];
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  function renderTemplate(tpl, n, total) {
+    const now = new Date();
+    const pad = (x) => String(x).padStart(2, "0");
+    const vars = {
+      n: String(n), nn: pad(n), total: String(total),
+      date: `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`,
+      time: `${pad(now.getHours())}:${pad(now.getMinutes())}`,
+      day: now.toLocaleDateString("en", { weekday: "long" }),
+      campaign: "Demo Campaign",
+      rand: String(1000 + Math.floor(Math.random() * 9000)),
+      emoji: pick(EMOJIS),
+    };
+    let out = tpl;
+    for (const [k, v] of Object.entries(vars)) out = out.split("{" + k + "}").join(v);
+    for (let i = 0; i < 20; i++) {
+      const m = out.match(/\{([^{}]*\|[^{}]*)\}/);
+      if (!m) break;
+      out = out.slice(0, m.index) + pick(m[1].split("|")) + out.slice(m.index + m[0].length);
+    }
+    return out.trim();
+  }
+
+  const realFetch = window.fetch.bind(window);
+  const json = (data) => Promise.resolve(new Response(JSON.stringify(data), {
+    status: 200, headers: { "Content-Type": "application/json" },
+  }));
+
+  window.fetch = function (input, init) {
+    const url = typeof input === "string" ? input : input.url;
+
+    if (url.includes("/api/preview")) {
+      const body = JSON.parse((init && init.body) || "{}");
+      const total = parseInt(body.total || 24, 10);
+      return json({ samples: [1, 2, 3].map((i) => renderTemplate(body.template || "", i, total)) });
+    }
+
+    if (url.includes("/api/quota")) {
+      const params = new URLSearchParams(url.split("?")[1] || "");
+      const interval = Math.max(parseInt(params.get("interval") || "60", 10), 1);
+      const perUpload = 1600 + (params.get("thumb") === "1" ? 50 : 0)
+                             + (params.get("comment") === "1" ? 50 : 0);
+      const perDay = Math.max(Math.floor(1440 / interval), 1);
+      const used = perUpload * perDay;
+      return json({
+        per_upload: perUpload, per_day: perDay, used: used, limit: 10000,
+        max_uploads: Math.floor(10000 / perUpload), over: used > 10000,
+      });
+    }
+
+    if (url.includes("/api/stats")) {
+      return json({ totals: {}, running: [], next: null, server_time: new Date().toISOString() });
+    }
+
+    return realFetch(input, init);
+  };
+
+  // Demo mein koi form submit nahi hona chahiye.
+  document.addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Ye demo hai — asli upload ke liye tool ko server ya PC par chalana padega.");
+  }, true);
+})();
+</script>
+<script src="assets/app.js"></script>
+
+</body>
+</html>

@@ -11,6 +11,43 @@ ko de do, wo `URL/enter` par apni API keys daalega aur dashboard se sab chalayeg
 
 ---
 
+## Demo (bina hosting ke UI dikhane ke liye)
+
+GitHub Pages Python nahi chala sakta — wo sirf static files serve karta hai. Isliye
+`docs/` folder mein UI ka **static demo** rakha hai, jo asli app se hi generate hota hai
+(dummy data ke saath). Client ko UI dikhana ho to bas ye link bhej do — hosting ka
+paisa lagne se pehle.
+
+**GitHub Pages on karo:** repo → Settings → Pages → Source: *Deploy from a branch* →
+branch `main`, folder `/docs` → Save. 1 minute mein link mil jayega:
+`https://<username>.github.io/Smart_tube/`
+
+Demo mein live title-preview, spintax aur quota estimator sach mein kaam karte hain
+(inko fake kar diya gaya hai). Upload/schedule nahi chalega — uske liye Python app
+chahiye.
+
+Demo dobara banana ho (UI badalne ke baad):
+
+```bash
+python tools/build_demo.py          # docs/ regenerate ho jayega
+python -m http.server -d docs 3000  # local par dekhne ke liye
+```
+
+### Sirf HTML/JS se ye tool kyun nahi ban sakta
+
+| Cheez | Static HTML page | Python app |
+|---|---|---|
+| YouTube upload | Ho sakta hai (OAuth PKCE), **par sirf tab khuli ho tab** | ✅ |
+| 24 ghante ka schedule | ❌ tab band = schedule khatam | ✅ SQLite mein hai, restart ke baad bhi chalta hai |
+| Instagram Reels | ❌ Graph API browser se CORS block karta hai | ✅ |
+| Instagram ke liye video ka public URL | ❌ static site file host nahi kar sakti | ✅ signed URL se serve hota hai |
+| Client secret / token chhupana | ❌ JS mein sab kuch public hota hai | ✅ server par rehta hai |
+
+Chhota sa matlab: static page se 24 ghante ka auto-upload aur Instagram — dono possible
+hi nahi hain. Python zaruri hai, par uski hosting **$0 mein** ho sakti hai (upar table dekho).
+
+---
+
 ## Screens
 
 | Page | Kya hai |
@@ -36,17 +73,24 @@ Browser mein `http://localhost:8000` kholo → `/enter` par settings bharo.
 
 ---
 
-## 2. Server par deploy (budget ~$7)
+## 2. Kahan chalayein (free options bhi hain)
 
-Scheduler tabhi chalega jab server **24x7 on** rahe. Jo hosting inactivity par so jaati hai
-(Render Free, PythonAnywhere free) wo hourly uploads ke liye kaam nahi karegi.
+Scheduler tabhi chalega jab app **on** rahe. Jo hosting inactivity par so jaati hai
+(Render Free, PythonAnywhere free) wo hourly uploads ke liye theek nahi.
 
 | Option | Kharcha | Note |
 |---|---|---|
-| **Oracle Cloud Always Free VM** | **$0** | Sabse sasta. Hamesha on rehta hai. Setup thoda lamba. |
-| **Hetzner CX22 VPS** | ~$4.5/mo | Best value, full control, disk bhi mil jaata hai. |
-| **RackNerd VPS** | ~$12–15/**saal** | Budget ke andar aaram se. |
-| **Render Starter** | $7/mo + disk | Sabse aasan (`render.yaml` ready hai), par disk alag se lagta hai. |
+| **Client ka apna PC/laptop** | **$0** | Personal use ke liye bilkul sahi. `python app.py` chalao, bas PC on rehna chahiye. |
+| **Oracle Cloud Always Free VM** | **$0** | Hamesha on. Card verify karna padta hai, setup thoda lamba. |
+| **Raspberry Pi / purana laptop** | $0 | Ghar par 24x7 chal jaata hai, bijli ke alawa kuch nahi. |
+| **Hetzner CX22 VPS** | ~$4.5/mo | Best paid value, full control. |
+| **RackNerd VPS** | ~$12–15/**saal** | Sasta paid option. |
+| **Render Starter** | $7/mo + disk | Sabse aasan (`render.yaml` ready hai), disk alag se lagta hai. |
+
+**PC band ho jaye to kya hota hai?** Kuch nahi bigadta — poora schedule SQLite mein hai.
+App dobara chalu karte hi jo uploads miss hue the wo turant chal jaate hain (ek saath,
+back-to-back). Nahi chahiye to campaign page se un rows ko **Skip** kar do. Browser-only
+tool mein ye possible hi nahi hota — tab band, schedule khatam.
 
 ### VPS par (Ubuntu)
 
