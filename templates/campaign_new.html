@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}New Campaign · Smart Tube{% endblock %}
+{% block heading %}New Campaign{% endblock %}
+
+{% block content %}
+
+{% if not yt_connected and not ig_connected %}
+  <div class="note">
+    Koi account connected nahi hai — campaign ban to jayega par uploads fail honge.
+    Pehle <a href="{{ url_for('enter') }}"><b>API & Settings</b></a> se connect karo.
+  </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+
+  <div class="card">
+    <h2>1️⃣ Video aur platform</h2>
+    <p class="sub">Ek hi video file baar-baar upload hogi, har baar naye title/comment ke saath.</p>
+
+    <div class="row">
+      <div class="field">
+        <label for="name">Campaign name</label>
+        <input type="text" id="name" name="name" required placeholder="Motivation reel — August">
+      </div>
+      <div class="field">
+        <label for="platform">Platform</label>
+        <select id="platform" name="platform">
+          <option value="youtube">YouTube only</option>
+          <option value="instagram">Instagram only</option>
+          <option value="both">YouTube + Instagram (dono)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="video">Video file</label>
+        <input type="file" id="video" name="video" accept="video/*" required data-max-mb="{{ max_mb }}">
+        <p class="hint" id="video_info">Max {{ max_mb }} MB · mp4 / mov / webm / mkv</p>
+      </div>
+      <div class="field" data-only="youtube">
+        <label for="thumbnail">Thumbnail (optional)</label>
+        <input type="file" id="thumbnail" name="thumbnail" accept="image/jpeg,image/png">
+        <p class="hint">JPG/PNG, 1280×720. Sirf YouTube par lagta hai.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2️⃣ Title, description aur comment</h2>
+    <p class="sub">
+      Variables use karo taaki har upload alag lage:
+      <code>{n}</code> <code>{nn}</code> <code>{total}</code> <code>{date}</code>
+      <code>{time}</code> <code>{day}</code> <code>{rand}</code> <code>{emoji}</code>.
+      Spintax bhi chalta hai: <code>{Best|Top|Superb}</code>.
+    </p>
+
+    <div class="field" data-only="youtube">
+      <label for="title_tpl">YouTube title</label>
+      <input type="text" id="title_tpl" name="title_tpl" required maxlength="200"
+             value="{Amazing|Superb|Best} clip {emoji} — part {n}/{total}">
+      <div class="preview-box" id="title_preview" style="margin-top:8px"></div>
+    </div>
+
+    <div class="field" data-only="youtube">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4"
+                placeholder="Upload #{n} · {date} {time}&#10;&#10;#shorts #viral"></textarea>
+    </div>
+
+    <div class="row" data-only="youtube">
+      <div class="field">
+        <label for="tags">Tags (comma se alag)</label>
+        <input type="text" id="tags" name="tags" placeholder="shorts, viral, motivation">
+      </div>
+      <div class="field">
+        <label for="category_id">Category</label>
+        <select id="category_id" name="category_id">
+          {% for cid, label in categories %}<option value="{{ cid }}">{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="privacy">Privacy</label>
+        <select id="privacy" name="privacy">
+          <option value="public">Public</option>
+          <option value="unlisted">Unlisted</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="comment_tpl">Auto comment (har upload ke baad post hoga)</label>
+      <input type="text" id="comment_tpl" name="comment_tpl"
+             value="{Nice|Superb|Mast} video {emoji} — {Subscribe|Follow} kar do! #{n}">
+      <div class="preview-box" id="comment_preview" style="margin-top:8px"></div>
+      <p class="hint">Khali chhod doge to koi comment post nahi hoga.</p>
+    </div>
+
+    <div class="check" data-only="youtube">
+      <input type="checkbox" id="pin_comment" name="pin_comment">
+      <label for="pin_comment">Comment ko pin karne ki koshish karo (YouTube API par best-effort hai)</label>
+    </div>
+    <div class="check" data-only="youtube">
+      <input type="checkbox" id="made_for_kids" name="made_for_kids">
+      <label for="made_for_kids">Made for kids</label>
+    </div>
+
+    <div data-only="instagram" style="display:none">
+      <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
+      <div class="field">
+        <label for="ig_caption_tpl">Instagram caption (khali = YouTube title use hoga)</label>
+        <input type="text" id="ig_caption_tpl" name="ig_caption_tpl"
+               placeholder="{Reel|Clip} #{n} {emoji} #reels #viral">
+      </div>
+      <div class="field">
+        <label for="ig_comment_tpl">Instagram comment (khali = upar wala comment use hoga)</label>
+        <input type="text" id="ig_comment_tpl" name="ig_comment_tpl" placeholder="Follow for more {emoji}">
+      </div>
+      <div class="check">
+        <input type="checkbox" id="ig_share_to_feed" name="ig_share_to_feed" checked>
+        <label for="ig_share_to_feed">Reel ko feed par bhi dikhao</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3️⃣ Schedule</h2>
+    <p class="sub">Client ki demand: 1 video har 1 ghante = 24 ghante mein 24 uploads. Default wahi set hai.</p>
+
+    <div class="row">
+      <div class="field">
+        <label for="interval_minutes">Gap (minutes)</label>
+        <input type="number" id="interval_minutes" name="interval_minutes" value="60" min="1" max="10080">
+        <p class="hint">60 = har ghante ek upload</p>
+      </div>
+      <div class="field">
+        <label for="total_uploads">Total uploads</label>
+        <input type="number" id="total_uploads" name="total_uploads" value="24" min="1" max="500">
+      </div>
+      <div class="field">
+        <label for="start_at">Start time ({{ tz_name }})</label>
+        <input type="datetime-local" id="start_at" name="start_at" value="{{ default_start }}">
+      </div>
+    </div>
+
+    <p class="hint" id="schedule_summary" style="font-size:13px"></p>
+    <div class="note info" id="quota_box"></div>
+
+    <div class="check">
+      <input type="checkbox" id="start_now" name="start_now" checked>
+      <label for="start_now">Campaign banate hi chalu kar do (warna paused rahega)</label>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn primary" type="submit">Campaign banao aur schedule karo</button>
+    <a class="btn ghost" href="{{ url_for('dashboard') }}">Cancel</a>
+  </div>
+</form>
+
+{% endblock %}

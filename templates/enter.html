@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}API & Settings · Smart Tube{% endblock %}
+{% block heading %}API & Settings{% endblock %}
+
+{% block content %}
+
+<div class="note info">
+  Yahan jo bhi keys daaloge wo isi server ki SQLite file mein save hongi. Ye page
+  hi poore tool ka setup hai — ek baar bhar do, phir sirf dashboard use karna hai.
+</div>
+
+<div class="grid cols-2">
+
+  <!-- ------------------------------------------------------- YouTube -->
+  <div class="card">
+    <h2>▶️ YouTube
+      {% if yt_connected %}<span class="tag success">connected</span>
+      {% else %}<span class="tag">not connected</span>{% endif %}
+    </h2>
+    <p class="sub">Google Cloud se OAuth client banao, ID/secret yahan paste karo, phir Connect dabao.</p>
+
+    {% if yt_connected and yt_channel %}
+      <div class="card" style="background:var(--bg-2);margin-bottom:16px">
+        <div class="btn-row" style="justify-content:space-between">
+          <div>
+            <strong>{{ yt_channel.title }}</strong><br>
+            <small class="muted">
+              {{ yt_channel.subscribers or '—' }} subscribers · {{ yt_channel.videos or '—' }} videos
+            </small>
+          </div>
+          <form method="post" action="{{ url_for('disconnect', platform='youtube') }}"
+                data-confirm="YouTube disconnect kar dein?">
+            <button class="btn sm danger">Disconnect</button>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+
+    <form method="post">
+      <input type="hidden" name="section" value="youtube">
+      <div class="field">
+        <label for="yt_client_id">OAuth Client ID</label>
+        <input type="text" id="yt_client_id" name="yt_client_id" value="{{ yt_client_id }}"
+               placeholder="1234567890-abcdef.apps.googleusercontent.com">
+      </div>
+      <div class="field">
+        <label for="yt_client_secret">OAuth Client Secret</label>
+        <input type="password" id="yt_client_secret" name="yt_client_secret"
+               value="{{ yt_client_secret }}" placeholder="GOCSPX-...">
+      </div>
+      <div class="btn-row">
+        <button class="btn">Save keys</button>
+        <a class="btn primary" href="{{ url_for('auth_youtube') }}">
+          {{ 'Reconnect' if yt_connected else 'Connect YouTube' }}
+        </a>
+      </div>
+    </form>
+
+    <p class="hint" style="margin-top:14px">Google Console mein ye <b>Authorized redirect URI</b> exactly daalna hai:</p>
+    <div class="btn-row">
+      <code class="mono" style="word-break:break-all">{{ redirect_uri }}</code>
+      <button class="btn sm ghost" data-copy="{{ redirect_uri }}">Copy</button>
+    </div>
+
+    <ol class="steps" style="margin-top:16px">
+      <li>console.cloud.google.com par project banao (free).</li>
+      <li><b>YouTube Data API v3</b> enable karo.</li>
+      <li>OAuth consent screen: type <b>External</b>, apni Gmail ko <b>Test user</b> mein add karo.</li>
+      <li>Credentials → Create → <b>OAuth client ID</b> → <b>Web application</b> → upar wala redirect URI paste karo.</li>
+      <li>Client ID + secret upar bharo, <b>Connect YouTube</b> dabao, Google par allow kar do.</li>
+    </ol>
+  </div>
+
+  <!-- ------------------------------------------------------- Instagram -->
+  <div class="card">
+    <h2>📸 Instagram
+      {% if ig_connected %}<span class="tag success">connected</span>
+      {% else %}<span class="tag">not connected</span>{% endif %}
+    </h2>
+    <p class="sub">Reels publish + auto comment. Graph API long-lived token chahiye.</p>
+
+    {% if ig_account %}
+      <div class="card" style="background:var(--bg-2);margin-bottom:16px">
+        <div class="btn-row" style="justify-content:space-between">
+          <div>
+            <strong>@{{ ig_account.username }}</strong><br>
+            <small class="muted">{{ ig_account.followers or '—' }} followers · {{ ig_account.media or '—' }} posts</small>
+          </div>
+          <form method="post" action="{{ url_for('disconnect', platform='instagram') }}"
+                data-confirm="Instagram disconnect kar dein?">
+            <button class="btn sm danger">Disconnect</button>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+
+    <form method="post">
+      <input type="hidden" name="section" value="instagram">
+      <div class="field">
+        <label for="ig_user_id">Instagram User ID (numeric)</label>
+        <input type="text" id="ig_user_id" name="ig_user_id" value="{{ ig_user_id }}"
+               placeholder="17841400000000000">
+      </div>
+      <div class="field">
+        <label for="ig_access_token">
+          Long-lived Access Token {% if ig_token_set %}<span class="tag success">saved</span>{% endif %}
+        </label>
+        <input type="password" id="ig_access_token" name="ig_access_token"
+               placeholder="{{ 'Naya token daalo (khali = purana rahega)' if ig_token_set else 'EAAG...' }}">
+      </div>
+      <div class="btn-row">
+        <button class="btn">Save & verify</button>
+      </div>
+    </form>
+    {% if ig_connected %}
+      <form method="post" action="{{ url_for('verify_instagram') }}" style="margin-top:9px">
+        <button class="btn sm ghost">Token dobara test karo</button>
+      </form>
+    {% endif %}
+
+    <div class="note">
+      Instagram apni API se posting sirf <b>Business/Creator</b> account par deta hai jo ek
+      Facebook Page se linked ho — personal account par Meta khud allow nahi karta.
+      Switch karna free hai: Instagram app → Settings → Account type → Switch to Creator.
+    </div>
+
+    <ol class="steps">
+      <li>Instagram account ko <b>Creator/Business</b> banao aur ek Facebook Page se link karo.</li>
+      <li>developers.facebook.com par app banao → <b>Instagram Graph API</b> add karo.</li>
+      <li>Graph API Explorer se permissions lo: <code>instagram_basic</code>,
+          <code>instagram_content_publish</code>, <code>pages_show_list</code>,
+          <code>pages_read_engagement</code>.</li>
+      <li>Short token ko <b>60-din wale long-lived token</b> mein exchange karo.</li>
+      <li><code>/me/accounts</code> → Page ID → <code>?fields=instagram_business_account</code> se IG user ID milega.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ------------------------------------------------------- general -->
+<div class="card">
+  <h2>⚙️ General</h2>
+  <p class="sub">Timezone se saare schedule times decide hote hain. Public URL Instagram aur Google dono ke liye zaruri hai.</p>
+  <form method="post">
+    <input type="hidden" name="section" value="general">
+    <div class="row">
+      <div class="field">
+        <label for="public_base_url">Public base URL</label>
+        <input type="text" id="public_base_url" name="public_base_url" value="{{ public_base_url }}"
+               placeholder="https://mytool.onrender.com">
+        <p class="hint">Bina slash ke. Instagram isi URL se video download karta hai, isliye
+           server internet par reachable hona chahiye.</p>
+      </div>
+      <div class="field">
+        <label for="timezone">Timezone</label>
+        <select id="timezone" name="timezone">
+          {% for tz in timezones %}
+            <option value="{{ tz }}" {{ 'selected' if tz == tz_name }}>{{ tz }}</option>
+          {% endfor %}
+        </select>
+        <p class="hint">Abhi: {{ tz_name }}</p>
+      </div>
+    </div>
+    <button class="btn primary">Save settings</button>
+  </form>
+</div>
+
+{% endblock %}

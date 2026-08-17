@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}{{ c.name }} · Smart Tube{% endblock %}
+{% block heading %}{{ c.name }}{% endblock %}
+
+{% block topbar_actions %}
+  {% if c.status == 'running' %}
+    <form class="inline" method="post" action="{{ url_for('campaign_action', campaign_id=c.id, action='pause') }}">
+      <button class="btn">⏸ Pause</button>
+    </form>
+  {% else %}
+    <form class="inline" method="post" action="{{ url_for('campaign_action', campaign_id=c.id, action='resume') }}">
+      <button class="btn primary">▶ Start</button>
+    </form>
+  {% endif %}
+  <form class="inline" method="post" action="{{ url_for('campaign_action', campaign_id=c.id, action='delete') }}"
+        data-confirm="Campaign, uska schedule aur uploaded file delete ho jayegi. Pakka?">
+    <button class="btn danger">Delete</button>
+  </form>
+{% endblock %}
+
+{% block content %}
+
+<div class="grid cols-4">
+  <div class="stat"><b>{{ c.total_uploads }}</b><span>Planned</span></div>
+  <div class="stat"><b>{{ c.interval_minutes }}m</b><span>Gap</span></div>
+  <div class="stat"><b>{{ per_day }}</b><span>Per day</span></div>
+  <div class="stat {{ 'warn' if c.status == 'paused' else 'ok' }}"><b>{{ c.status }}</b><span>Status</span></div>
+</div>
+
+<div class="grid cols-2">
+  <div class="card">
+    <h2>📄 Settings</h2>
+    <table>
+      <tbody>
+        <tr><td class="muted">Platform</td><td>
+          {% if c.platform in ('youtube','both') %}<span class="tag yt">YouTube</span>{% endif %}
+          {% if c.platform in ('instagram','both') %}<span class="tag ig">Instagram</span>{% endif %}
+        </td></tr>
+        <tr><td class="muted">Video</td><td class="mono">{{ c.video_name }} · {{ video_mb }} MB</td></tr>
+        <tr><td class="muted">Thumbnail</td><td>{{ 'lagaya jayega' if c.thumb_path else '—' }}</td></tr>
+        <tr><td class="muted">Title template</td><td class="mono">{{ c.title_tpl }}</td></tr>
+        <tr><td class="muted">Comment template</td><td class="mono">{{ c.comment_tpl or '—' }}</td></tr>
+        <tr><td class="muted">Privacy</td><td>{{ c.privacy }}</td></tr>
+        <tr><td class="muted">Start</td><td>{{ c.start_at|localtime('%d %b %Y, %I:%M %p') }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>📊 YouTube quota</h2>
+    <p class="sub">Google ka default project quota 10,000 units/din hai.</p>
+    <table>
+      <tbody>
+        <tr><td class="muted">Ek upload ka kharcha</td><td><b>{{ quota.per_upload }}</b> units</td></tr>
+        <tr><td class="muted">Is speed par roz</td><td><b>{{ '{:,}'.format(quota.used) }}</b> units</td></tr>
+        <tr><td class="muted">Daily limit</td><td>{{ '{:,}'.format(quota.limit) }} units</td></tr>
+        <tr><td class="muted">Realistic max</td><td><b>{{ quota.max_uploads }}</b> uploads/din</td></tr>
+      </tbody>
+    </table>
+    {% if quota.over %}
+      <div class="note">
+        Is speed par quota din mein khatam ho jayega. Jo uploads bach jayenge wo
+        <b>apne aap agle din</b> ke liye shift ho jayenge — koi upload cancel nahi hota.
+        24/din chahiye to Google se quota increase request karni padegi.
+      </div>
+    {% endif %}
+
+    <h2 style="margin-top:18px">⏱️ Sab shift karo</h2>
+    <form method="post" action="{{ url_for('campaign_action', campaign_id=c.id, action='shift') }}"
+          class="btn-row" style="margin-top:8px">
+      <input type="number" name="minutes" value="60" style="max-width:110px">
+      <button class="btn sm">Pending uploads shift karo (minutes)</button>
+    </form>
+    <p class="hint">Minus value daalo to pehle chal jayenge (jaise -30).</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🗓️ Upload schedule</h2>
+  <p class="sub">Har row alag se run / skip / reschedule ho sakti hai.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Platform</th><th>Time</th><th>Title / comment</th><th>Status</th><th>Link</th><th></th></tr>
+      </thead>
+      <tbody>
+      {% for u in uploads %}
+        <tr data-upload-row="{{ u.id }}">
+          <td><b>{{ u.seq }}</b></td>
+          <td><span class="tag {{ 'yt' if u.platform == 'youtube' else 'ig' }}">
+            {{ 'YT' if u.platform == 'youtube' else 'IG' }}</span></td>
+          <td>
+            {{ u.scheduled_at|localtime }}
+            <div class="muted" style="font-size:11px">{{ u.scheduled_at|ago }}</div>
+          </td>
+          <td style="max-width:330px">
+            {{ (u.title or '')[:70] }}
+            {% if u.comment_text %}
+              <div class="muted" style="font-size:11px">💬 {{ u.comment_text[:70] }}</div>
+            {% endif %}
+            {% if u.status == 'running' %}
+              <div class="bar" data-progress-for="{{ u.id }}" style="margin-top:6px">
+                <i style="width: {{ u.progress or 0 }}%"></i>
+              </div>
+            {% endif %}
+            {% if u.error %}
+              <div style="font-size:11px;color:var(--err)">{{ u.error[:150] }}</div>
+            {% endif %}
+          </td>
+          <td>
+            <span class="tag {{ u.status }}">{{ u.status }}</span>
+            {% if u.attempts > 1 %}<div class="muted" style="font-size:11px">{{ u.attempts }} tries</div>{% endif %}
+          </td>
+          <td>
+            {% if u.remote_url %}
+              <a class="btn sm ghost" href="{{ u.remote_url }}" target="_blank" rel="noopener">Open ↗</a>
+            {% else %}<span class="muted">—</span>{% endif %}
+          </td>
+          <td>
+            <div class="btn-row">
+              {% if u.status == 'pending' %}
+                <form class="inline" method="post" action="{{ url_for('upload_action', upload_id=u.id, action='run') }}">
+                  <button class="btn sm primary">Run now</button>
+                </form>
+                <form class="inline" method="post" action="{{ url_for('upload_action', upload_id=u.id, action='skip') }}">
+                  <button class="btn sm ghost">Skip</button>
+                </form>
+              {% elif u.status in ('failed', 'skipped') %}
+                <form class="inline" method="post" action="{{ url_for('upload_action', upload_id=u.id, action='retry') }}">
+                  <button class="btn sm">Retry</button>
+                </form>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>▤ Is campaign ke logs</h2>
+  {% if logs %}
+    <div class="table-wrap">
+      <table>
+        <tbody>
+        {% for l in logs %}
+          <tr>
+            <td class="muted mono" style="white-space:nowrap">{{ l.ts|localtime('%d %b %H:%M:%S') }}</td>
+            <td><span class="tag {{ 'failed' if l.level == 'error' else ('running' if l.level == 'warn' else '') }}">{{ l.level }}</span></td>
+            <td>{{ l.message }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty">Abhi koi log nahi.</div>
+  {% endif %}
+</div>
+
+{% endblock %}
