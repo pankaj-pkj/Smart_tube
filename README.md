@@ -129,15 +129,29 @@ docker run -d --restart always -p 8000:8000 \
 
 ## 3. YouTube connect (`/enter` page par)
 
+👉 **Poora step-by-step (screenshots wale button naam ke saath): [SETUP-YOUTUBE.md](SETUP-YOUTUBE.md)**
+
+Chhota version:
+
 1. [console.cloud.google.com](https://console.cloud.google.com) par project banao (free).
 2. **YouTube Data API v3** enable karo.
-3. **OAuth consent screen** → type *External* → apni Gmail ko **Test user** mein add karo.
-4. **Credentials → Create → OAuth client ID → Web application**.
+3. **OAuth consent screen / Google Auth Platform** → Audience type *External*,
+   **Publishing status = Testing**, apni Gmail ko **Test user** mein add karo.
+4. **Data Access** mein ye scopes add karo: `youtube.upload` aur `youtube.force-ssl`.
+5. **Credentials/Clients → Create → OAuth client ID → Web application**.
    Authorized redirect URI mein exactly ye daalo:
    `https://<tumhara-domain>/auth/youtube/callback`
-5. Client ID + Secret `/enter` par paste karo → **Connect YouTube** → Google par Allow.
+6. `/enter` ke **General** section mein Public base URL set karo (warna redirect URI
+   `localhost` wala banega aur `redirect_uri_mismatch` aayega).
+7. Client ID + Secret `/enter` par paste karo → **Connect YouTube** → Google par Allow.
+   ("Google hasn't verified this app" warning normal hai: *Advanced → Go to … (unsafe)*.)
 
-Token DB mein save ho jaata hai aur apne aap refresh hota rehta hai — dobara login nahi karna.
+Token DB mein save hota hai aur apne aap refresh hota rehta hai. **Par dhyan do:** Google
+testing-mode apps ko **7 din** wala refresh token deta hai, isliye har ~7 din mein
+`/enter` se **Connect YouTube** dobara dabana padega. Isse bachne ka ek hi tareeka hai —
+app ko Google se verify karana (hafte lagte hain, privacy policy + domain ownership
+chahiye). App ko bina verification ke *Production* mein daal doge to login hi block ho
+jayega: *"has not completed the Google verification process"*.
 
 ---
 
