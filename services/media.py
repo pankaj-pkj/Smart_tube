@@ -87,11 +87,28 @@ def verify(rel_path, signature):
     return hmac.compare_digest(sign(rel_path), signature or "")
 
 
+CALLBACK_PATH = "/auth/youtube/callback"
+
+
+def clean_base(url):
+    """Base URL ko saaf karo — sirf domain bachna chahiye.
+
+    Log aksar poori redirect URI is field mein paste kar dete hain (kyunki wahi to
+    Google Console mein copy karni hoti hai). Tab app usme dobara /auth/youtube/callback
+    jod deta tha aur URI double ho jaati thi — Google phir redirect_uri_mismatch deta
+    tha aur wajah kahin nahi dikhti thi. Isliye ye suffix hata dete hain.
+    """
+    url = (url or "").strip().rstrip("/")
+    while url.lower().endswith(CALLBACK_PATH):
+        url = url[: -len(CALLBACK_PATH)].rstrip("/")
+    return url
+
+
 def base_url():
     url = db.get_setting("public_base_url") or os.environ.get(
         "PUBLIC_BASE_URL", "http://localhost:8000"
     )
-    return url.rstrip("/")
+    return clean_base(url)
 
 
 def public_url(rel_path):

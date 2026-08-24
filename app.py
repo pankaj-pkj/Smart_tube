@@ -189,8 +189,15 @@ def enter():
                 db.set_setting("ig_access_token", token)
             db.set_setting("ig_user_id", form.get("ig_user_id", "").strip())
         if section in ("general", "all"):
-            db.set_setting("public_base_url", form.get("public_base_url", "").strip())
+            typed = form.get("public_base_url", "").strip()
+            cleaned = media.clean_base(typed)
+            db.set_setting("public_base_url", cleaned)
             db.set_setting("timezone", form.get("timezone", "Asia/Kolkata"))
+            if cleaned != typed.rstrip("/"):
+                flash(
+                    "Public base URL mein poori redirect URI thi — sirf domain rakh "
+                    f"diya: {cleaned}", "success",
+                )
 
         # "Save & Connect YouTube" — keys save ho chuki hain, ab seedha Google par bhejo.
         if form.get("action") == "connect_youtube":

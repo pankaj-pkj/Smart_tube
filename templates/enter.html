@@ -154,8 +154,14 @@
         <label for="public_base_url">Public base URL</label>
         <input type="text" id="public_base_url" name="public_base_url" value="{{ public_base_url }}"
                placeholder="https://mytool.onrender.com">
-        <p class="hint">Bina slash ke. Instagram isi URL se video download karta hai, isliye
-           server internet par reachable hona chahiye.</p>
+        <p class="hint">
+          <b>Sirf domain daalo</b> — jaise <code>https://mytool.onrender.com</code>.
+          Iske aage <code>/auth/youtube/callback</code> app khud jodta hai, isliye poori
+          redirect URI yahan mat paste karna (warna URI double ho jayegi aur Google
+          <code>redirect_uri_mismatch</code> dega). End mein slash bhi nahi.
+          Instagram isi URL se video download karta hai, isliye server internet par
+          reachable hona chahiye.
+        </p>
       </div>
       <div class="field">
         <label for="timezone">Timezone</label>
