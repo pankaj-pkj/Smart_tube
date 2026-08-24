@@ -49,11 +49,18 @@
                value="{{ yt_client_secret }}" placeholder="GOCSPX-...">
       </div>
       <div class="btn-row">
-        <button class="btn">Save keys</button>
-        <a class="btn primary" href="{{ url_for('auth_youtube') }}">
-          {{ 'Reconnect' if yt_connected else 'Connect YouTube' }}
-        </a>
+        <!-- Dono submit buttons hain. Pehle ye Connect wala ek plain link tha, to
+             fields mein type ki hui keys submit hue bina hi gayab ho jaati thi aur
+             "client ID/secret set nahi hai" wala error aata tha. -->
+        <button class="btn primary" name="action" value="connect_youtube">
+          {{ 'Save & Reconnect' if yt_connected else 'Save & Connect YouTube' }}
+        </button>
+        <button class="btn">Sirf save karo</button>
       </div>
+      <p class="hint">
+        Keys bharke seedha <b>Save &amp; Connect</b> dabao — ye pehle keys save karega,
+        phir Google par le jayega.
+      </p>
     </form>
 
     <p class="hint" style="margin-top:14px">Google Console mein ye <b>Authorized redirect URI</b> exactly daalna hai:</p>
@@ -147,8 +154,14 @@
         <label for="public_base_url">Public base URL</label>
         <input type="text" id="public_base_url" name="public_base_url" value="{{ public_base_url }}"
                placeholder="https://mytool.onrender.com">
-        <p class="hint">Bina slash ke. Instagram isi URL se video download karta hai, isliye
-           server internet par reachable hona chahiye.</p>
+        <p class="hint">
+          <b>Sirf domain daalo</b> — jaise <code>https://mytool.onrender.com</code>.
+          Iske aage <code>/auth/youtube/callback</code> app khud jodta hai, isliye poori
+          redirect URI yahan mat paste karna (warna URI double ho jayegi aur Google
+          <code>redirect_uri_mismatch</code> dega). End mein slash bhi nahi.
+          Instagram isi URL se video download karta hai, isliye server internet par
+          reachable hona chahiye.
+        </p>
       </div>
       <div class="field">
         <label for="timezone">Timezone</label>
@@ -162,6 +175,19 @@
     </div>
     <button class="btn primary">Save settings</button>
   </form>
+
+  <div class="note">
+    <b>Free hosting par data mit sakta hai.</b> Render free plan (aur waise hi kuch doosre
+    free hosts) 15 minute inactivity ke baad instance so jaate hain, aur jaagne par app
+    folder reset ho jaata hai — yahan save ki hui keys, connected account aur campaigns
+    sab chale jaate hain. Do tareeke bachne ke:
+    <br>• Keys ko hosting ke <b>environment variables</b> mein daal do —
+    <code>YT_CLIENT_ID</code>, <code>YT_CLIENT_SECRET</code>, <code>IG_ACCESS_TOKEN</code>,
+    <code>IG_USER_ID</code>. Ye restart ke baad bhi bache rehte hain (yahan khali dikhein
+    to bhi kaam karte hain).
+    <br>• Campaigns aur login token bachane ke liye <b>persistent disk</b> chahiye —
+    <code>DB_PATH</code> ko us disk ke andar point karo, ya app apne PC/VPS par chalao.
+  </div>
 </div>
 
 {% endblock %}

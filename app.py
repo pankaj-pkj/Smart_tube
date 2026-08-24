@@ -99,6 +99,26 @@ def setup_done():
     return yt.is_connected() or ig.is_connected()
 
 
+@app.before_request
+def remember_base_url():
+    """Public URL khud pehchano agar kahin set nahi hai.
+
+    Free hosting par app folder restart par reset ho jaata hai, isliye DB mein save
+    kiya hua public_base_url gayab ho jaata hai. Pehle aise mein app `localhost:8000`
+    par gir jaata tha aur Google `redirect_uri_mismatch` de deta tha — bina kisi
+    saaf wajah ke. Ab pehli hi request se asli host uthakar save kar lete hain.
+    """
+    if db.get_setting("public_base_url") or os.environ.get("PUBLIC_BASE_URL"):
+        return
+    # Render/Caddy jaise proxy ke peeche asli scheme aur host header mein aate hain.
+    scheme = request.headers.get("X-Forwarded-Proto", request.scheme).split(",")[0].strip()
+    host = request.headers.get("X-Forwarded-Host", request.host).split(",")[0].strip()
+    if not host or host.startswith(("localhost", "127.0.0.1")):
+        return
+    db.set_setting("public_base_url", f"{scheme}://{host}")
+    db.log(f"Public base URL khud detect kiya: {scheme}://{host}", source="app")
+
+
 def login_required(view):
     @wraps(view)
     def wrapper(*args, **kwargs):
@@ -169,8 +189,25 @@ def enter():
                 db.set_setting("ig_access_token", token)
             db.set_setting("ig_user_id", form.get("ig_user_id", "").strip())
         if section in ("general", "all"):
-            db.set_setting("public_base_url", form.get("public_base_url", "").strip())
+            typed = form.get("public_base_url", "").strip()
+            cleaned = media.clean_base(typed)
+            db.set_setting("public_base_url", cleaned)
             db.set_setting("timezone", form.get("timezone", "Asia/Kolkata"))
+            if cleaned != typed.rstrip("/"):
+                flash(
+                    "Public base URL mein poori redirect URI thi — sirf domain rakh "
+                    f"diya: {cleaned}", "success",
+                )
+
+        # "Save & Connect YouTube" — keys save ho chuki hain, ab seedha Google par bhejo.
+        if form.get("action") == "connect_youtube":
+            if not db.get_config("yt_client_id", "YT_CLIENT_ID") or not db.get_config(
+                "yt_client_secret", "YT_CLIENT_SECRET"
+            ):
+                flash("Pehle Client ID aur Client Secret dono bharo, phir connect karo.",
+                      "error")
+                return redirect(url_for("enter"))
+            return redirect(url_for("auth_youtube"))
 
         flash("Settings save ho gayi", "success")
 
@@ -184,10 +221,10 @@ def enter():
 
     return render_template(
         "enter.html",
-        yt_client_id=db.get_setting("yt_client_id", ""),
-        yt_client_secret=db.get_setting("yt_client_secret", ""),
-        ig_user_id=db.get_setting("ig_user_id", ""),
-        ig_token_set=bool(db.get_setting("ig_access_token")),
+        yt_client_id=db.get_config("yt_client_id", "YT_CLIENT_ID"),
+        yt_client_secret=db.get_config("yt_client_secret", "YT_CLIENT_SECRET"),
+        ig_user_id=db.get_config("ig_user_id", "IG_USER_ID"),
+        ig_token_set=bool(db.get_config("ig_access_token", "IG_ACCESS_TOKEN")),
         public_base_url=media.base_url(),
         redirect_uri=media.base_url() + "/auth/youtube/callback",
         timezones=COMMON_TIMEZONES,
@@ -349,9 +386,13 @@ def campaign_detail(campaign_id):
     logs = db.query(
         "SELECT * FROM logs WHERE campaign_id = ? ORDER BY id DESC LIMIT 50", (campaign_id,)
     )
-    per_day = round(1440 / camp["interval_minutes"], 1)
+    # Gap se jo rate banta hai wo campaign ke total se zyada ho sakta hai (2 min gap ka
+    # rate 720/din hai, par campaign mein sirf 2 uploads hon to 720 kabhi nahi honge).
+    # Tile par asli aankda dikhao, rate alag se.
+    rate_per_day = 1440 / camp["interval_minutes"]
+    effective = min(rate_per_day, camp["total_uploads"])
     quota = yt.estimate_quota(
-        min(int(per_day) or 1, camp["total_uploads"]),
+        max(int(effective), 1),
         with_thumbnail=bool(camp["thumb_path"]),
         with_comment=bool(camp["comment_tpl"]),
     )
@@ -360,10 +401,17 @@ def campaign_detail(campaign_id):
         c=camp,
         uploads=uploads,
         logs=logs,
-        per_day=per_day,
+        per_day=_neat(effective),
+        rate_per_day=_neat(rate_per_day),
+        rate_capped=rate_per_day > camp["total_uploads"],
         quota=quota,
         video_mb=media.size_mb(camp["video_path"]),
     )
+
+
+def _neat(number):
+    """2.0 ko '2' dikhao, 1.5 ko '1.5'."""
+    return int(number) if float(number).is_integer() else round(number, 1)
 
 
 @app.route("/campaigns/<int:campaign_id>/<action>", methods=["POST"])

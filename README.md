@@ -11,6 +11,18 @@ ko de do, wo `URL/enter` par apni API keys daalega aur dashboard se sab chalayeg
 
 ---
 
+## 📖 Setup guides — isi order mein karo
+
+| # | Guide | Kya karega |
+|---|---|---|
+| 1 | **[HOSTING-RENDER.md](HOSTING-RENDER.md)** | Render par app host karna, env vars, free vs paid |
+| 2 | **[SETUP-YOUTUBE.md](SETUP-YOUTUBE.md)** | Google Cloud setup, YouTube connect, test upload |
+| 3 | Neeche section 4 | Instagram connect (optional) |
+
+Dono guides mein har step ka number hai aur end mein errors ki poori list hai.
+
+---
+
 ## Demo (bina hosting ke UI dikhane ke liye)
 
 GitHub Pages Python nahi chala sakta — wo sirf static files serve karta hai. Isliye
@@ -75,6 +87,9 @@ Browser mein `http://localhost:8000` kholo → `/enter` par settings bharo.
 
 ## 2. Kahan chalayein (free options bhi hain)
 
+👉 **Render par step-by-step: [HOSTING-RENDER.md](HOSTING-RENDER.md)**
+
+
 Scheduler tabhi chalega jab app **on** rahe. Jo hosting inactivity par so jaati hai
 (Render Free, PythonAnywhere free) wo hourly uploads ke liye theek nahi.
 
@@ -124,6 +139,23 @@ docker run -d --restart always -p 8000:8000 \
 
 > ⚠️ **Worker hamesha 1 rakhna** (`-w 1`). Scheduler app ke andar chalta hai — 2 workers
 > matlab 2 scheduler matlab har video **do baar** upload.
+
+### ⚠️ Free hosting par data mit jaata hai
+
+Render free plan jaise hosts 15 min inactivity par instance sula dete hain, aur jaagne
+par app folder reset ho jaata hai. `smarttube.db` wahin banti hai, isliye **keys,
+connected account aur saare campaigns chale jaate hain**. Hourly schedule aisi jagah
+chal hi nahi sakta.
+
+Isse nipatne ke do hisse hain:
+
+| Kya bachana hai | Kaise |
+|---|---|
+| API keys | Hosting ke env vars mein daalo: `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `IG_ACCESS_TOKEN`, `IG_USER_ID`. `/enter` par field khali dikhegi par kaam karegi. |
+| Campaigns, schedule, OAuth token, videos | Persistent disk chahiye. `DB_PATH` ko disk ke andar point karo (`render.yaml` mein already set hai) aur `storage/` bhi usi disk par rakho. |
+
+Sabse saaf raasta: app apne PC / VPS / Oracle free VM par chalao — wahan ye problem hai
+hi nahi.
 
 ---
 
@@ -273,6 +305,10 @@ services/instagram_service.py Reels publish (3-step) + comment
 services/textgen.py         {n}, {date}, spintax wala template engine
 services/media.py           file save + signed public URLs
 templates/ static/          UI
+tools/build_demo.py         docs/ wala static demo generate karta hai
+docs/                       GitHub Pages par chalne wala UI demo
+HOSTING-RENDER.md           Render par host karne ki guide
+SETUP-YOUTUBE.md            Google Cloud + YouTube connect ki guide
 deploy/ Dockerfile Procfile render.yaml   hosting
 ```
 
