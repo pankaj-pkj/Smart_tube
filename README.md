@@ -11,6 +11,18 @@ ko de do, wo `URL/enter` par apni API keys daalega aur dashboard se sab chalayeg
 
 ---
 
+## 📖 Setup guides — isi order mein karo
+
+| # | Guide | Kya karega |
+|---|---|---|
+| 1 | **[HOSTING-RENDER.md](HOSTING-RENDER.md)** | Render par app host karna, env vars, free vs paid |
+| 2 | **[SETUP-YOUTUBE.md](SETUP-YOUTUBE.md)** | Google Cloud setup, YouTube connect, test upload |
+| 3 | Neeche section 4 | Instagram connect (optional) |
+
+Dono guides mein har step ka number hai aur end mein errors ki poori list hai.
+
+---
+
 ## Demo (bina hosting ke UI dikhane ke liye)
 
 GitHub Pages Python nahi chala sakta — wo sirf static files serve karta hai. Isliye
@@ -74,6 +86,9 @@ Browser mein `http://localhost:8000` kholo → `/enter` par settings bharo.
 ---
 
 ## 2. Kahan chalayein (free options bhi hain)
+
+👉 **Render par step-by-step: [HOSTING-RENDER.md](HOSTING-RENDER.md)**
+
 
 Scheduler tabhi chalega jab app **on** rahe. Jo hosting inactivity par so jaati hai
 (Render Free, PythonAnywhere free) wo hourly uploads ke liye theek nahi.
@@ -290,6 +305,10 @@ services/instagram_service.py Reels publish (3-step) + comment
 services/textgen.py         {n}, {date}, spintax wala template engine
 services/media.py           file save + signed public URLs
 templates/ static/          UI
+tools/build_demo.py         docs/ wala static demo generate karta hai
+docs/                       GitHub Pages par chalne wala UI demo
+HOSTING-RENDER.md           Render par host karne ki guide
+SETUP-YOUTUBE.md            Google Cloud + YouTube connect ki guide
 deploy/ Dockerfile Procfile render.yaml   hosting
 ```
 
