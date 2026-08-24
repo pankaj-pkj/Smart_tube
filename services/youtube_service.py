@@ -41,7 +41,11 @@ def _client_config(redirect_uri):
     client_id = db.get_config("yt_client_id", "YT_CLIENT_ID")
     client_secret = db.get_config("yt_client_secret", "YT_CLIENT_SECRET")
     if not client_id or not client_secret:
-        raise YouTubeError("YouTube client ID/secret set nahi hai. /enter page par jao.")
+        raise YouTubeError(
+            "YouTube Client ID / Secret save nahi hain. /enter page par dono fields "
+            "bharo aur 'Save & Connect YouTube' button dabao (sirf type karne se save "
+            "nahi hota)."
+        )
     return {
         "web": {
             "client_id": client_id,

@@ -130,11 +130,18 @@
                value="GOCSPX-demo-secret-value" placeholder="GOCSPX-...">
       </div>
       <div class="btn-row">
-        <button class="btn">Save keys</button>
-        <a class="btn primary" href="#">
-          Reconnect
-        </a>
+        <!-- Dono submit buttons hain. Pehle ye Connect wala ek plain link tha, to
+             fields mein type ki hui keys submit hue bina hi gayab ho jaati thi aur
+             "client ID/secret set nahi hai" wala error aata tha. -->
+        <button class="btn primary" name="action" value="connect_youtube">
+          Save &amp; Reconnect
+        </button>
+        <button class="btn">Sirf save karo</button>
       </div>
+      <p class="hint">
+        Keys bharke seedha <b>Save &amp; Connect</b> dabao — ye pehle keys save karega,
+        phir Google par le jayega.
+      </p>
     </form>
 
     <p class="hint" style="margin-top:14px">Google Console mein ye <b>Authorized redirect URI</b> exactly daalna hai:</p>

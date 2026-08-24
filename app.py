@@ -172,6 +172,16 @@ def enter():
             db.set_setting("public_base_url", form.get("public_base_url", "").strip())
             db.set_setting("timezone", form.get("timezone", "Asia/Kolkata"))
 
+        # "Save & Connect YouTube" — keys save ho chuki hain, ab seedha Google par bhejo.
+        if form.get("action") == "connect_youtube":
+            if not db.get_config("yt_client_id", "YT_CLIENT_ID") or not db.get_config(
+                "yt_client_secret", "YT_CLIENT_SECRET"
+            ):
+                flash("Pehle Client ID aur Client Secret dono bharo, phir connect karo.",
+                      "error")
+                return redirect(url_for("enter"))
+            return redirect(url_for("auth_youtube"))
+
         flash("Settings save ho gayi", "success")
 
         if section == "instagram" and db.get_setting("ig_access_token"):
