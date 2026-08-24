@@ -386,9 +386,13 @@ def campaign_detail(campaign_id):
     logs = db.query(
         "SELECT * FROM logs WHERE campaign_id = ? ORDER BY id DESC LIMIT 50", (campaign_id,)
     )
-    per_day = round(1440 / camp["interval_minutes"], 1)
+    # Gap se jo rate banta hai wo campaign ke total se zyada ho sakta hai (2 min gap ka
+    # rate 720/din hai, par campaign mein sirf 2 uploads hon to 720 kabhi nahi honge).
+    # Tile par asli aankda dikhao, rate alag se.
+    rate_per_day = 1440 / camp["interval_minutes"]
+    effective = min(rate_per_day, camp["total_uploads"])
     quota = yt.estimate_quota(
-        min(int(per_day) or 1, camp["total_uploads"]),
+        max(int(effective), 1),
         with_thumbnail=bool(camp["thumb_path"]),
         with_comment=bool(camp["comment_tpl"]),
     )
@@ -397,10 +401,17 @@ def campaign_detail(campaign_id):
         c=camp,
         uploads=uploads,
         logs=logs,
-        per_day=per_day,
+        per_day=_neat(effective),
+        rate_per_day=_neat(rate_per_day),
+        rate_capped=rate_per_day > camp["total_uploads"],
         quota=quota,
         video_mb=media.size_mb(camp["video_path"]),
     )
+
+
+def _neat(number):
+    """2.0 ko '2' dikhao, 1.5 ko '1.5'."""
+    return int(number) if float(number).is_integer() else round(number, 1)
 
 
 @app.route("/campaigns/<int:campaign_id>/<action>", methods=["POST"])

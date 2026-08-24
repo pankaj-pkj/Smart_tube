@@ -23,7 +23,15 @@
 <div class="grid cols-4">
   <div class="stat"><b>{{ c.total_uploads }}</b><span>Planned</span></div>
   <div class="stat"><b>{{ c.interval_minutes }}m</b><span>Gap</span></div>
-  <div class="stat"><b>{{ per_day }}</b><span>Per day</span></div>
+  <div class="stat">
+    <b>{{ per_day }}</b><span>Per day</span>
+    {% if rate_capped %}
+      <small class="muted" style="display:block;font-size:10.5px;margin-top:5px">
+        {{ c.interval_minutes }}m gap ka rate {{ rate_per_day }}/din hai, par campaign
+        mein kul {{ c.total_uploads }} uploads hain
+      </small>
+    {% endif %}
+  </div>
   <div class="stat {{ 'warn' if c.status == 'paused' else 'ok' }}"><b>{{ c.status }}</b><span>Status</span></div>
 </div>
 
