@@ -13,17 +13,26 @@ Render ke kuch buttons dikhte nahi.
 Ye tool ek **scheduler** chalata hai (har ghante upload). Iske liye app ka **chalte
 rehna** zaruri hai.
 
-| | Free plan | Starter ($7/mo) |
-|---|---|---|
-| Kharcha | $0 | ~$7/mo + disk (~$1) |
-| 15 min inactivity ke baad | **so jaata hai** | chalta rehta hai |
-| Jaagne par saved data | **mit jaata hai** (keys, campaigns, videos) | disk lagane par bacha rehta hai |
-| Hourly schedule | ❌ nahi chalega | ✅ chalega |
-| Testing / demo | ✅ theek hai | — |
+Render free plan instance ko tab sula deta hai jab kuch der koi request na aaye — aur
+jaagne par app folder reset ho jaata hai. Isliye app mein **keep-alive** already daala
+hua hai: wo har 10 minute par khud ko ping karta hai, to instance sota hi nahi.
 
-**Matlab saaf shabdon mein:** Free plan par tum tool **dikhaa** sakte ho, par 24 ghante
-ka schedule **chala nahi** sakte. Asli use ke liye ya to Starter plan + disk lo, ya app
-apne PC / Oracle Cloud free VM par chalao (dono jagah ye problem nahi hai).
+| | Free + keep-alive | Starter ($7/mo) + disk |
+|---|---|---|
+| Kharcha | **$0** | ~$8/mo |
+| Sota hai? | nahi (self-ping se jagta rehta hai) | nahi |
+| Hourly schedule | ✅ chal jaata hai | ✅ chalta hai |
+| Deploy / platform restart ke baad data | ❌ mit jaata hai (disk nahi hoti) | ✅ bacha rehta hai |
+| Kiske liye | personal use, testing, demo | jahan data kabhi na jaye |
+
+**Free tier ka hisaab:** Render 750 instance-hours/month deta hai, mahine mein ~730
+ghante hote hain — yaani **ek** service 24/7 aaram se fit ho jaati hai. **Do** free
+services ek saath 24/7 chalaoge to limit paar ho jayegi.
+
+**Free plan par dhyan rakhne wali ek baat:** jab bhi naya deploy karoge (ya Render khud
+restart kare), keys aur campaigns mit jayenge. Isse bachne ke liye keys hamesha
+**environment variables** mein rakho (PART 2 mein bataya hai) — wo kabhi nahi mitte.
+Campaigns bhi pakka bachane hon to PART 4 (paid disk) dekho.
 
 ---
 
@@ -70,6 +79,15 @@ Chaho to ye bhi:
 |---|---|---|
 | `APP_PIN` | koi 4-6 digit PIN | site kholne se pehle PIN maangega |
 | `MAX_UPLOAD_MB` | `512` | ek video ki max size |
+| `KEEP_ALIVE` | `1` (default) | free plan par app ko sone se rokta hai. Paid plan ya apne PC par `0` kar sakte ho |
+| `KEEP_ALIVE_MINUTES` | `10` (default) | kitni der mein ek self-ping |
+
+Free plan par YouTube keys bhi yahin daal do — deploy ke baad dobara nahi bharni padengi:
+
+| Key | Value |
+|---|---|
+| `YT_CLIENT_ID` | Google wali Client ID |
+| `YT_CLIENT_SECRET` | Google wala Secret |
 
 **Step 7.** **"Create Web Service"** dabao. Build shuru ho jayega (2-4 minute).
 
@@ -118,7 +136,13 @@ hai. Ye normal hai.
 
 - YouTube box mein **"Save & Connect YouTube"** aur **"Sirf save karo"** — do buttons
 - Neeche **General** card mein Public base URL tumhara asli URL
-- Sabse neeche ek **peela box** — *"Free hosting par data mit sakta hai"*
+- Sabse neeche ek **peela box** — *"Free hosting par data tabhi bachta hai jab app sota na ho"*
+
+**Step 14b.** Keep-alive chal raha hai ya nahi, ye **Logs** page par dekh lo — shuru mein
+ek line honi chahiye: *"Keep-alive on: har 10 minute par self-ping"*.
+
+Seedha check karna ho to browser mein kholo: `<tumhara-URL>/healthz` — `{"ok": true, ...}`
+dikhna chahiye (PIN laga ho tab bhi ye page khulta hai, jaan-bujh kar).
 
 Sab dikh gaya? Hosting ho gayi ✅
 

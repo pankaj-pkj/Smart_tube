@@ -35,18 +35,20 @@ Google testing-mode apps ko 7 din wala token deta hai. Matlab har ~7 din mein `/
 page se **Save & Connect YouTube** dobara dabana padega. Ye Google ka rule hai, tool ka
 bug nahi. Client ko pehle bata dena.
 
-**4. Free hosting par saved data mit jaata hai.**
-Render free plan 15 min inactivity ke baad instance sula deta hai, aur jaagne par app
-folder reset ho jaata hai — keys, connected account aur campaigns sab chale jaate hain.
+**4. Free hosting par data deploy ke baad mit jaata hai.**
+App mein **keep-alive** already on hai (har 10 min self-ping), isliye instance sota nahi
+aur normally kuch mitta bhi nahi. Par **jab bhi naya deploy hoga** (ya Render khud
+restart karega), free plan par sab chala jayega — keys, connected account aur campaigns.
 
 Bachne ke tareeke:
 - **Keys ke liye:** hosting ke env vars mein daal do — `YT_CLIENT_ID`,
-  `YT_CLIENT_SECRET`. `/enter` par field khali dikhe to bhi kaam karengi.
+  `YT_CLIENT_SECRET`. Ye kabhi nahi mitte. `/enter` par field khali dikhe to bhi kaam
+  karengi.
 - **Campaigns + login token ke liye:** persistent disk chahiye
   (HOSTING-RENDER.md ka PART 4), ya app apne PC/VPS par chalao.
 
-Sirf test kar rahe ho to itna kaafi hai: **ek hi baithak mein** keys daalo, connect karo
-aur test upload chala lo — beech mein lamba gap mat do.
+Isliye setup **ek hi baithak mein** khatam karo, aur keys daalne ke baad deploy mat
+karna — warna dobara connect karna padega.
 
 ---
 
