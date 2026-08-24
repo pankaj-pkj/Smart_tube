@@ -7,7 +7,11 @@ import threading
 from datetime import datetime, timezone
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "smarttube.db")
+
+# DB_PATH env se badla ja sakta hai. Render/Docker jaise jagah par jahan project folder
+# restart par reset ho jaata hai, isse DB ko mounted disk ke andar rakh sakte ho —
+# warna har restart par saari keys, campaigns aur schedule mit jayenge.
+DB_PATH = os.environ.get("DB_PATH") or os.path.join(BASE_DIR, "smarttube.db")
 
 _local = threading.local()
 
@@ -99,6 +103,9 @@ def get_db():
     """Har thread ko apna connection (scheduler alag thread mein chalta hai)."""
     conn = getattr(_local, "conn", None)
     if conn is None:
+        folder = os.path.dirname(DB_PATH)
+        if folder:
+            os.makedirs(folder, exist_ok=True)
         conn = sqlite3.connect(DB_PATH, timeout=30, check_same_thread=False)
         conn.row_factory = sqlite3.Row
         conn.execute("PRAGMA journal_mode=WAL")
@@ -145,6 +152,16 @@ def set_setting(key, value):
         "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
         (key, value),
     )
+
+
+def get_config(key, env_key, default=""):
+    """Pehle DB dekho, warna environment variable.
+
+    Free hosting (Render free plan waghera) par project folder restart ke baad reset
+    ho jaata hai, isliye /enter page se save ki hui keys gayab ho jaati hain. Env var
+    mein rakhi keys restart ke baad bhi bachi rehti hain, isliye wo fallback hai.
+    """
+    return get_setting(key) or os.environ.get(env_key, "") or default
 
 
 def get_json(key, default=None):

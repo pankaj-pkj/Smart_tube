@@ -9,7 +9,29 @@ warna Google Console ke kuch buttons chhup jaate hain.
 
 ---
 
-## Do baatein pehle jaan lo
+## Teen baatein pehle jaan lo
+
+**0. Free hosting par saved data mit jaata hai.**
+Render free plan (aur waise hi kuch doosre free hosts) 15 minute inactivity ke baad
+instance so jaate hain, aur jaagne par app folder reset ho jaata hai. Matlab `/enter`
+par save ki hui keys, connected YouTube account aur saare campaigns **gayab** ho jaate
+hain — dobara sab bharna padta hai.
+
+Bachne ke tareeke:
+
+- **Keys ke liye:** hosting ke **environment variables** mein daal do —
+  `YT_CLIENT_ID` aur `YT_CLIENT_SECRET`. Ye restart ke baad bhi bache rehte hain
+  (`/enter` par field khali dikhe to bhi kaam karte hain).
+- **Campaigns + login token ke liye:** persistent disk chahiye. Paid plan par disk
+  lagao aur `DB_PATH` ko us disk ke andar point karo (Render par
+  `/opt/render/project/src/storage/smarttube.db`), ya app apne PC/VPS par chalao.
+
+Sirf testing kar rahe ho to itna kaafi hai: **ek hi baithak mein** keys daalo, connect
+karo aur test upload chala lo — beech mein lamba gap mat do.
+
+---
+
+## Do aur baatein
 
 **1. App ko "Testing" mode mein hi rakhna hai.**
 Video upload wala scope Google ke liye "sensitive" hai. Agar app **Production**

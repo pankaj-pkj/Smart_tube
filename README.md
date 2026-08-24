@@ -125,6 +125,23 @@ docker run -d --restart always -p 8000:8000 \
 > ⚠️ **Worker hamesha 1 rakhna** (`-w 1`). Scheduler app ke andar chalta hai — 2 workers
 > matlab 2 scheduler matlab har video **do baar** upload.
 
+### ⚠️ Free hosting par data mit jaata hai
+
+Render free plan jaise hosts 15 min inactivity par instance sula dete hain, aur jaagne
+par app folder reset ho jaata hai. `smarttube.db` wahin banti hai, isliye **keys,
+connected account aur saare campaigns chale jaate hain**. Hourly schedule aisi jagah
+chal hi nahi sakta.
+
+Isse nipatne ke do hisse hain:
+
+| Kya bachana hai | Kaise |
+|---|---|
+| API keys | Hosting ke env vars mein daalo: `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `IG_ACCESS_TOKEN`, `IG_USER_ID`. `/enter` par field khali dikhegi par kaam karegi. |
+| Campaigns, schedule, OAuth token, videos | Persistent disk chahiye. `DB_PATH` ko disk ke andar point karo (`render.yaml` mein already set hai) aur `storage/` bhi usi disk par rakho. |
+
+Sabse saaf raasta: app apne PC / VPS / Oracle free VM par chalao — wahan ye problem hai
+hi nahi.
+
 ---
 
 ## 3. YouTube connect (`/enter` page par)

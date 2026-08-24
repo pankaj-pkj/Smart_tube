@@ -184,10 +184,10 @@ def enter():
 
     return render_template(
         "enter.html",
-        yt_client_id=db.get_setting("yt_client_id", ""),
-        yt_client_secret=db.get_setting("yt_client_secret", ""),
-        ig_user_id=db.get_setting("ig_user_id", ""),
-        ig_token_set=bool(db.get_setting("ig_access_token")),
+        yt_client_id=db.get_config("yt_client_id", "YT_CLIENT_ID"),
+        yt_client_secret=db.get_config("yt_client_secret", "YT_CLIENT_SECRET"),
+        ig_user_id=db.get_config("ig_user_id", "IG_USER_ID"),
+        ig_token_set=bool(db.get_config("ig_access_token", "IG_ACCESS_TOKEN")),
         public_base_url=media.base_url(),
         redirect_uri=media.base_url() + "/auth/youtube/callback",
         timezones=COMMON_TIMEZONES,

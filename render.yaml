@@ -17,6 +17,16 @@ services:
         sync: false
       - key: PUBLIC_BASE_URL
         sync: false
+      # DB disk ke andar honi chahiye. Project folder har deploy/restart par reset hota
+      # hai, isliye default jagah par rakhi DB (keys, token, campaigns) mit jaati hai.
+      - key: DB_PATH
+        value: /opt/render/project/src/storage/smarttube.db
+      # Ye do optional hain. Set kar doge to /enter par keys dobara daalne ki zarurat
+      # nahi padegi, chahe instance restart ho jaye.
+      - key: YT_CLIENT_ID
+        sync: false
+      - key: YT_CLIENT_SECRET
+        sync: false
       - key: MAX_UPLOAD_MB
         value: "512"
       - key: TICK_SECONDS

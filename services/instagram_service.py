@@ -26,21 +26,24 @@ class InstagramError(Exception):
 
 
 def _token():
-    token = db.get_setting("ig_access_token", "")
+    token = db.get_config("ig_access_token", "IG_ACCESS_TOKEN")
     if not token:
         raise InstagramError("Instagram access token set nahi hai. /enter page par jao.")
     return token
 
 
 def _user_id():
-    uid = db.get_setting("ig_user_id", "")
+    uid = db.get_config("ig_user_id", "IG_USER_ID")
     if not uid:
         raise InstagramError("Instagram user ID set nahi hai. /enter page par jao.")
     return uid
 
 
 def is_connected():
-    return bool(db.get_setting("ig_access_token") and db.get_setting("ig_user_id"))
+    return bool(
+        db.get_config("ig_access_token", "IG_ACCESS_TOKEN")
+        and db.get_config("ig_user_id", "IG_USER_ID")
+    )
 
 
 def disconnect():

@@ -162,6 +162,19 @@
     </div>
     <button class="btn primary">Save settings</button>
   </form>
+
+  <div class="note">
+    <b>Free hosting par data mit sakta hai.</b> Render free plan (aur waise hi kuch doosre
+    free hosts) 15 minute inactivity ke baad instance so jaate hain, aur jaagne par app
+    folder reset ho jaata hai — yahan save ki hui keys, connected account aur campaigns
+    sab chale jaate hain. Do tareeke bachne ke:
+    <br>• Keys ko hosting ke <b>environment variables</b> mein daal do —
+    <code>YT_CLIENT_ID</code>, <code>YT_CLIENT_SECRET</code>, <code>IG_ACCESS_TOKEN</code>,
+    <code>IG_USER_ID</code>. Ye restart ke baad bhi bache rehte hain (yahan khali dikhein
+    to bhi kaam karte hain).
+    <br>• Campaigns aur login token bachane ke liye <b>persistent disk</b> chahiye —
+    <code>DB_PATH</code> ko us disk ke andar point karo, ya app apne PC/VPS par chalao.
+  </div>
 </div>
 
 {% endblock %}
