@@ -99,6 +99,26 @@ def setup_done():
     return yt.is_connected() or ig.is_connected()
 
 
+@app.before_request
+def remember_base_url():
+    """Public URL khud pehchano agar kahin set nahi hai.
+
+    Free hosting par app folder restart par reset ho jaata hai, isliye DB mein save
+    kiya hua public_base_url gayab ho jaata hai. Pehle aise mein app `localhost:8000`
+    par gir jaata tha aur Google `redirect_uri_mismatch` de deta tha — bina kisi
+    saaf wajah ke. Ab pehli hi request se asli host uthakar save kar lete hain.
+    """
+    if db.get_setting("public_base_url") or os.environ.get("PUBLIC_BASE_URL"):
+        return
+    # Render/Caddy jaise proxy ke peeche asli scheme aur host header mein aate hain.
+    scheme = request.headers.get("X-Forwarded-Proto", request.scheme).split(",")[0].strip()
+    host = request.headers.get("X-Forwarded-Host", request.host).split(",")[0].strip()
+    if not host or host.startswith(("localhost", "127.0.0.1")):
+        return
+    db.set_setting("public_base_url", f"{scheme}://{host}")
+    db.log(f"Public base URL khud detect kiya: {scheme}://{host}", source="app")
+
+
 def login_required(view):
     @wraps(view)
     def wrapper(*args, **kwargs):
