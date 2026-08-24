@@ -177,15 +177,17 @@
   </form>
 
   <div class="note">
-    <b>Free hosting par data mit sakta hai.</b> Render free plan (aur waise hi kuch doosre
-    free hosts) 15 minute inactivity ke baad instance so jaate hain, aur jaagne par app
-    folder reset ho jaata hai — yahan save ki hui keys, connected account aur campaigns
-    sab chale jaate hain. Do tareeke bachne ke:
-    <br>• Keys ko hosting ke <b>environment variables</b> mein daal do —
+    <b>Free hosting par data tabhi bachta hai jab app sota na ho.</b> Render jaise free
+    plans kuch der koi request na aane par instance sula dete hain, aur jaagne par app
+    folder reset ho jaata hai — keys, connected account aur campaigns sab chale jaate hain.
+    <br>• <b>Keep-alive</b> app mein already on hai — har 10 minute par khud ko ping karke
+    jagaye rakhta hai, isliye normally kuch mitta nahi. Chalu rehne ke liye upar wala
+    <b>Public base URL</b> sahi hona zaruri hai. Band karna ho to <code>KEEP_ALIVE=0</code>.
+    <br>• Deploy ya platform ke apne restart par free plan par data phir bhi jaata hai.
+    Keys bachane ke liye unhe hosting ke <b>environment variables</b> mein daal do —
     <code>YT_CLIENT_ID</code>, <code>YT_CLIENT_SECRET</code>, <code>IG_ACCESS_TOKEN</code>,
-    <code>IG_USER_ID</code>. Ye restart ke baad bhi bache rehte hain (yahan khali dikhein
-    to bhi kaam karte hain).
-    <br>• Campaigns aur login token bachane ke liye <b>persistent disk</b> chahiye —
+    <code>IG_USER_ID</code> (yahan khali dikhein to bhi kaam karti hain).
+    <br>• Campaigns aur login token pakka bachane ke liye <b>persistent disk</b> chahiye —
     <code>DB_PATH</code> ko us disk ke andar point karo, ya app apne PC/VPS par chalao.
   </div>
 </div>

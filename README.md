@@ -140,21 +140,40 @@ docker run -d --restart always -p 8000:8000 \
 > ⚠️ **Worker hamesha 1 rakhna** (`-w 1`). Scheduler app ke andar chalta hai — 2 workers
 > matlab 2 scheduler matlab har video **do baar** upload.
 
-### ⚠️ Free hosting par data mit jaata hai
+### 🔁 Keep-alive — free hosting par sone se bachao
 
-Render free plan jaise hosts 15 min inactivity par instance sula dete hain, aur jaagne
-par app folder reset ho jaata hai. `smarttube.db` wahin banti hai, isliye **keys,
-connected account aur saare campaigns chale jaate hain**. Hourly schedule aisi jagah
-chal hi nahi sakta.
+Render jaise free plans instance ko tab sulate hain jab kuch der koi **inbound HTTP
+request** na aaye. Sote hi schedule ruk jaata hai, aur jaagne par app folder reset ho
+jaata hai (`smarttube.db` wahin banti hai, isliye keys aur campaigns tak chale jaate
+hain).
 
-Isse nipatne ke do hisse hain:
+Isliye app **khud ko har 10 minute par ping karta hai** (`/healthz` par). Instance sota
+hi nahi, to schedule bhi chalta rehta hai aur data bhi bacha rehta hai. Ye by default
+**on** hai, bas `PUBLIC_BASE_URL` sahi hona chahiye.
+
+| Env var | Default | Kaam |
+|---|---|---|
+| `KEEP_ALIVE` | `1` | `0` karne se self-ping band |
+| `KEEP_ALIVE_MINUTES` | `10` | kitni der mein ek ping |
+
+Render free tier **750 instance-hours/month** deta hai aur mahine mein ~730 ghante hote
+hain — yaani **ek** service 24/7 aaram se fit ho jaati hai. Do free services ek saath
+24/7 chalaoge to limit paar ho jayegi.
+
+Ping localhost par apne aap skip ho jaata hai, isliye apne PC par chalate waqt kuch
+karne ki zarurat nahi.
+
+### ⚠️ Phir bhi jo cheez bach nahi sakti
+
+Keep-alive **sone se** bachata hai, **deploy ya platform ke apne restart se** nahi. Free
+plan par disk nahi hoti, to us waqt data phir bhi jaayega:
 
 | Kya bachana hai | Kaise |
 |---|---|
 | API keys | Hosting ke env vars mein daalo: `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `IG_ACCESS_TOKEN`, `IG_USER_ID`. `/enter` par field khali dikhegi par kaam karegi. |
 | Campaigns, schedule, OAuth token, videos | Persistent disk chahiye. `DB_PATH` ko disk ke andar point karo (`render.yaml` mein already set hai) aur `storage/` bhi usi disk par rakho. |
 
-Sabse saaf raasta: app apne PC / VPS / Oracle free VM par chalao — wahan ye problem hai
+Sabse pakka raasta: app apne PC / VPS / Oracle free VM par chalao — wahan ye problem hai
 hi nahi.
 
 ---
@@ -291,6 +310,11 @@ to pehle proper auth lagwa lena.
 | `PORT` | `8000` | Server port. |
 | `TICK_SECONDS` | `30` | Scheduler kitni der mein due uploads check kare. |
 | `MAX_UPLOAD_MB` | `512` | Ek video ki max size. |
+| `KEEP_ALIVE` | `1` | Free hosting ko sone se rokne wala self-ping. `0` se band. |
+| `KEEP_ALIVE_MINUTES` | `10` | Kitni der mein ek self-ping. |
+| `DB_PATH` | project folder | SQLite file kahan rahegi. Disk wale setup par uske andar point karo. |
+| `YT_CLIENT_ID` / `YT_CLIENT_SECRET` | *(khali)* | Keys env se bhi de sakte ho — DB mit jaye tab bhi bachi rehti hain. |
+| `IG_ACCESS_TOKEN` / `IG_USER_ID` | *(khali)* | Wahi baat Instagram ke liye. |
 
 ---
 

@@ -578,6 +578,23 @@ def serve_media(signature, rel_path):
     return send_from_directory(directory, os.path.basename(rel_path), conditional=True)
 
 
+@app.route("/healthz")
+def healthz():
+    """Halka sa health check — keep-alive ping isi ko maarta hai.
+
+    Jaan-bujh kar bina login ke khulta hai (APP_PIN laga ho tab bhi), warna app
+    khud ko ping karke jaga nahi paayega. Isme koi private cheez nahi jaati.
+    """
+    pending = db.query(
+        "SELECT COUNT(*) AS c FROM uploads WHERE status = 'pending'", one=True
+    )
+    return jsonify({
+        "ok": True,
+        "time": db.iso(db.utcnow()),
+        "pending_uploads": pending["c"] if pending else 0,
+    })
+
+
 @app.route("/api/stats")
 @login_required
 def api_stats():

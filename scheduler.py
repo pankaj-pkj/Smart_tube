@@ -11,6 +11,7 @@ import os
 import threading
 from datetime import datetime, timedelta, timezone
 
+import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 
 import db
@@ -305,6 +306,44 @@ def tick():
         _tick_lock.release()
 
 
+# ------------------------------------------------------------ keep alive
+
+
+_ping_fail_streak = 0
+
+
+def keep_alive_ping():
+    """App khud ko HTTP request bhejta hai taaki free hosting use sula na de.
+
+    Render/Koyeb jaise free plans instance ko tab sulate hain jab kuch der koi
+    **inbound HTTP request** na aaye. Andar chal rahe timers se koi farak nahi
+    padta — isliye bahar se aati hui ek asli request chahiye. Jab instance sota
+    nahi to uska folder bhi reset nahi hota, yaani keys aur campaigns bhi bache
+    rehte hain.
+
+    Ek baat saaf rahe: jo cheez ise nahi bacha sakti wo hai deploy ya platform ka
+    apna restart — us waqt free plan par data phir bhi jaata hai (disk nahi hoti).
+    """
+    global _ping_fail_streak
+    base = media.base_url()
+    if not base or base.startswith("http://localhost") or "127.0.0.1" in base:
+        return  # local development — ping ka koi matlab nahi
+    try:
+        resp = requests.get(f"{base}/healthz", timeout=20)
+        if resp.status_code >= 400:
+            raise requests.RequestException(f"HTTP {resp.status_code}")
+        if _ping_fail_streak:
+            db.log(f"Keep-alive dobara chalu ({_ping_fail_streak} fail ke baad)",
+                   source="keepalive")
+        _ping_fail_streak = 0
+    except requests.RequestException as err:
+        # Har fail log karoge to logs bhar jayenge; sirf pehla aur phir har 6th.
+        _ping_fail_streak += 1
+        if _ping_fail_streak == 1 or _ping_fail_streak % 6 == 0:
+            db.log(f"Keep-alive ping fail ({_ping_fail_streak}): {err}",
+                   level="warn", source="keepalive")
+
+
 def start():
     global _scheduler
     if _scheduler:
@@ -315,6 +354,15 @@ def start():
         tick, "interval", seconds=seconds, id="tick",
         max_instances=1, coalesce=True, misfire_grace_time=3600,
     )
+
+    if os.environ.get("KEEP_ALIVE", "1").strip().lower() not in ("0", "false", "no", "off"):
+        minutes = max(int(os.environ.get("KEEP_ALIVE_MINUTES", "10")), 1)
+        _scheduler.add_job(
+            keep_alive_ping, "interval", minutes=minutes, id="keepalive",
+            max_instances=1, coalesce=True, misfire_grace_time=600,
+        )
+        db.log(f"Keep-alive on: har {minutes} minute par self-ping", source="keepalive")
+
     _scheduler.start()
     db.log(f"Scheduler start hua (har {seconds}s par check)", source="scheduler")
     return _scheduler
